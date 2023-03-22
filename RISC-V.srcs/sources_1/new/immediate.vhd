@@ -44,7 +44,7 @@ begin
 				else
 					immediate_extended_o <= ones(10 downto 0) & instruction_i(31) & instruction_i(19 downto 12) & instruction_i(20) & instruction_i(30 downto 21) & '0';
 				end if;
-			when others => null;
+			when others => immediate_extended_o <= (others => '0');
 
 
 		end case;
