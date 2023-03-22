@@ -38,35 +38,15 @@ begin
 		--If the sum of two negative numbers yields a positive result, the sum has overflowed.
 		--Otherwise, the sum has not overflowed.
 		--
-		-- if (a_i(WIDTH - 1) = b_i(WIDTH - 1) and alu_res(WIDTH-1) /= a_i(WIDTH-1)) then
-		-- of_o <= '1';
-		-- else
-		-- of_o <= '0';
-		-- end if;
-
-	end process;
-	
-	zero_flag : process (a_i, b_i, op_i)
-	begin
-		if (std_logic_vector(signed(a_i) + signed(b_i)) = zeros and op_i = "0000") then
-			zero_o <= '1';
-		elsif (std_logic_vector(signed(a_i) - signed(b_i)) = zeros and op_i = "0001") then
-			zero_o <= '1';
-		elsif ((a_i sll to_integer(unsigned(b_i)) = zeros and op_i = "0010")) then
-			zero_o <= '1';
-		elsif ((a_i xor b_i) = zeros and op_i = "1000") then
-			zero_o <= '1';
-		elsif ((a_i srl to_integer(unsigned(b_i)) = zeros) and op_i = "101") then
-			zero_o <= '1';
-		elsif ((std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)))) = zeros and op_i = "1011") then
-			zero_o <= '1';
-		elsif ((a_i or b_i) = zeros and op_i = "1100") then
-			zero_o <= '1';
-		elsif ((a_i and b_i) = zeros and op_i = "1110") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
+     if (a_i(WIDTH - 1) = b_i(WIDTH - 1) and res_o(WIDTH-1) /= a_i(WIDTH-1)) then
+        of_o <= '1';
+     else
+        of_o <= '0';
+     end if;
+		
+	zero_o <= '1' when res_o = zeros else '0';
 		
 	end process;
+
+	
 end behav;
