@@ -50,43 +50,23 @@ begin
 	begin
 		if (std_logic_vector(signed(a_i) + signed(b_i)) = zeros and op_i = "0000") then
 			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if (std_logic_vector(signed(a_i) - signed(b_i)) = zeros and op_i = "0001") then
+		elsif (std_logic_vector(signed(a_i) - signed(b_i)) = zeros and op_i = "0001") then
+			zero_o <= '1';
+		elsif ((a_i sll to_integer(unsigned(b_i)) = zeros and op_i = "0010")) then
+			zero_o <= '1';
+		elsif ((a_i xor b_i) = zeros and op_i = "1000") then
+			zero_o <= '1';
+		elsif ((a_i srl to_integer(unsigned(b_i)) = zeros) and op_i = "101") then
+			zero_o <= '1';
+		elsif ((std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)))) = zeros and op_i = "1011") then
+			zero_o <= '1';
+		elsif ((a_i or b_i) = zeros and op_i = "1100") then
+			zero_o <= '1';
+		elsif ((a_i and b_i) = zeros and op_i = "1110") then
 			zero_o <= '1';
 		else
 			zero_o <= '0';
 		end if;
-		if ((a_i sll to_integer(unsigned(b_i)) = zeros and op_i = "0010")) then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if ((a_i xor b_i) = zeros and op_i = "1000") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if ((a_i srl to_integer(unsigned(b_i)) = zeros) and op_i = "101") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if ((std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)))) = zeros and op_i = "1011") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if ((a_i or b_i) = zeros and op_i = "1100") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
-		if ((a_i and b_i) = zeros and op_i = "1110") then
-			zero_o <= '1';
-		else
-			zero_o <= '0';
-		end if;
+		
 	end process;
 end behav;
