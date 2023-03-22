@@ -32,21 +32,26 @@ begin
 			when "1011" => res_o <= std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)));
 			when "1100" => res_o <= a_i or b_i;
 			when "1110" => res_o <= a_i and b_i;
-			when others => res_o <= (others => '0');
+			when others => res_o    <= (others => '0');
 		end case;
+ 
 		--If the sum of two positive numbers yields a negative result, the sum has overflowed.
 		--If the sum of two negative numbers yields a positive result, the sum has overflowed.
 		--Otherwise, the sum has not overflowed.
-		--
-     if (a_i(WIDTH - 1) = b_i(WIDTH - 1) and res_o(WIDTH-1) /= a_i(WIDTH-1)) then
-        of_o <= '1';
-     else
-        of_o <= '0';
-     end if;
-		
-	zero_o <= '1' when res_o = zeros else '0';
-		
+ 
+		--If 2 Two's Complement numbers are subtracted, and their signs are different,
+		--then overflow occurs if and only if the result has the same sign as the subtrahend.
+ 
+		if (a_i(WIDTH - 1) = b_i(WIDTH - 1) and res_o(WIDTH - 1) /= a_i(WIDTH - 1)) then
+			of_o <= '1';
+		elsif (a_i(WIDTH - 1) /= b_i(WIDTH - 1) and b_i(WIDTH - 1) = res_o(WIDTH - 1)) then
+			of_o <= '1';
+		else
+			of_o <= '0';
+		end if;
+ 
+		zero_o <= '1' when res_o = zeros else '0';
+ 
 	end process;
-
-	
+ 
 end behav;
