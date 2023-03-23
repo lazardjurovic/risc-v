@@ -64,7 +64,7 @@ begin
     if(if_id_flush_i = '1') then
         IF_ID_reg <= (others=> '0');
     else
-        if(if_id_en_i = '1' and rising_edge(clk)) then
+        if(if_id_en_i = '1' and falling_edge(clk)) then
             IF_ID_reg <= instr_mem_read_i & program_counter & std_logic_vector( signed(immediate(30 downto 0)& '0') + signed(IF_ID_reg(63 downto 32)));
         end if;
     end if;
