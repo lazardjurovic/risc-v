@@ -40,8 +40,9 @@ architecture behav of data_path is
 signal program_counter : std_logic_vector(31 downto 0) := (others => '0');
 
 signal IF_ID_reg : std_logic_vector(95 downto 0);
-signal ID_EX_reg : std_logic;
-
+signal ID_EX_reg : std_logic_vector(127 downto 0);
+signal EX_MEM_reg : std_logic_vector(95 downto 0);
+signal MEM_WB_reg : std_logic_vector(95 downto 0);
 
 signal  rs1_data : std_logic_vector(31 downto 0);
 signal  rs2_data: std_logic_vector(31 downto 0);
@@ -53,8 +54,9 @@ signal  rd_data : std_logic_vector(31 downto 0);
 signal immediate : std_logic_vector(31 downto 0);
 
 signal branch_comp_a, branch_comp_b : std_logic_vector(31 downto 0); -- input signals for comparator calculating branch_condition
+signal alu_a, alu_b, alu_b_intern,alu_out : std_logic_vector(31 downto 0); -- signals for connecting ALU sorces
 
-signal wb_data : std_logic_vector(31 downto 0);
+signal wb_forward_data, mem_forward_data : std_logic_vector(31 downto 0);
 
 begin
 
@@ -88,13 +90,13 @@ begin
     end if;
     
     if(branch_forward_a_i = '1') then
-        branch_comp_a <= wb_data;
+        branch_comp_a <= wb_forward_data;
     else
         branch_comp_a <= rs1_data;
     end if;
     
     if(branch_forward_b_i = '1') then
-          branch_comp_b <= wb_data;
+          branch_comp_b <= wb_forward_data;
     else
         branch_comp_b <= rs2_data;
     end if;
@@ -105,11 +107,67 @@ end process;
 
 rs1_address <= IF_ID_reg(19 downto 15);
 rs2_address <= IF_ID_reg(24 downto 20);
-rd_address <= IF_ID_reg(11 downto 7);
 
-ID_EX: process(clk, rs1_data, rs2_data, immediate)
+ID_EX: process(clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i,alu_src_b_i)
 begin
 
+    if(falling_edge(clk)) then
+    
+        ID_EX_reg <= rs1_data & rs2_data & immediate & IF_ID_reg(31 downto 0);
+        
+    end if;
+    
+    case alu_forward_a_i is
+        
+        when "00" => alu_a <= ID_EX_reg(31 downto 0);
+        when "01" => alu_a <= wb_forward_data;
+        when "10" => alu_a <= mem_forward_data;
+        when others => alu_a <= (others => '0');
+        
+    end case;
+    
+    case alu_forward_b_i is
+        
+        when "00" => alu_b_intern <= ID_EX_reg(63 downto 32);
+        when "01" => alu_b_intern <= wb_forward_data;
+        when "10" => alu_b_intern <= mem_forward_data;
+        when others => alu_b_intern <= (others => '0');
+        
+    end case;
+
+    alu_b <= alu_b_intern when  alu_src_b_i = '0' else IF_ID_reg(95 downto 64);
+ 
+end process;
+
+EX_MEM: process(clk, alu_out, ID_EX_reg)
+begin
+
+    if(falling_edge(clk)) then
+    
+        EX_MEM_reg <= alu_out & ID_EX_reg(63 downto 32) &ID_EX_reg(127 downto 96); 
+    
+    end if;
+    
+    mem_forward_data <= EX_MEM_reg(31 downto 0);
+    data_mem_address_o <= EX_MEM_reg(31 downto 0);
+    data_mem_write_o <= ID_EX_reg(63 downto 32);
+    
+
+end process;
+
+MEM_WB: process(clk, EX_MEM_reg)
+begin
+
+    if(falling_edge(clk)) then
+        
+        MEM_WB_reg <= EX_MEM_reg(31 downto 0) & data_mem_read_i & EX_MEM_reg(95 downto 64);
+        
+    end if;
+    
+    rd_data <= EX_MEM_reg(31 downto 0) when mem_to_reg_i = '0' else  data_mem_read_i;
+    wb_forward_data <= EX_MEM_reg(31 downto 0) when mem_to_reg_i = '0' else  data_mem_read_i;
+    rd_address <= EX_MEM_reg(75 downto 71);
+    
 end process;
 
 
@@ -132,6 +190,18 @@ Imm_gen: entity work.immediate
 port map(
     instruction_i => IF_ID_reg(31 downto 0),
     immediate_extended_o => immediate
+);
+
+--TODO: figure out where do i connect overflow and zero flags
+
+ALU_entity: entity work.ALU
+port map(
+    a_i => alu_a,
+    b_i => alu_b,
+    op_i => alu_op_i,
+    res_o => alu_out,
+    zero_o => open,
+    of_o => open
 );
 
 end behav;
