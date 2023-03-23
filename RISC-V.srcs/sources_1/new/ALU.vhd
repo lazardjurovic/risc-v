@@ -9,7 +9,7 @@ entity ALU is
 	port (
 		a_i    : in STD_LOGIC_VECTOR(WIDTH - 1 downto 0); --prvi operand
 		b_i    : in STD_LOGIC_VECTOR(WIDTH - 1 downto 0); --drugi operand
-		op_i   : in STD_LOGIC_VECTOR(3 downto 0); --port za izbor operacije
+		op_i   : in STD_LOGIC_VECTOR(4 downto 0); --port za izbor operacije
 		res_o  : out STD_LOGIC_VECTOR(WIDTH - 1 downto 0); --rezultat
 		zero_o : out STD_LOGIC; -- signal da je rezultat nula
 	of_o   : out STD_LOGIC); -- signal da je doslo do prekoracenja opsega
@@ -20,18 +20,18 @@ begin
 	process (a_i, b_i, op_i) is
 	begin
 		case op_i is
-			when "0000" => res_o <= std_logic_vector(signed(a_i) + signed(b_i));
-			when "0001" => res_o <= std_logic_vector(signed(a_i) - signed(b_i));
-			when "0010" => res_o <= a_i sll to_integer(unsigned(b_i));
-			when "0110" => res_o <= std_logic_vector(to_signed(1, 32)) when signed(a_i) < signed(b_i) else
+			when "00000" => res_o <= std_logic_vector(signed(a_i) + signed(b_i));
+			when "00010" => res_o <= std_logic_vector(signed(a_i) - signed(b_i));
+			when "00100" => res_o <= a_i sll to_integer(unsigned(b_i));
+			when "01000" => res_o <= std_logic_vector(to_signed(1, 32)) when signed(a_i) < signed(b_i) else
 				std_logic_vector(to_signed(0, 32));
-			when "0111" => res_o <= std_logic_vector(to_signed(1, 32)) when unsigned(a_i) < unsigned(b_i) else
+			when "01100" => res_o <= std_logic_vector(to_signed(1, 32)) when unsigned(a_i) < unsigned(b_i) else
 				std_logic_vector(to_signed(0, 32));
-			when "1000" => res_o <= a_i xor b_i;
-			when "1010" => res_o <= a_i srl to_integer(unsigned(b_i));
-			when "1011" => res_o <= std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)));
-			when "1100" => res_o <= a_i or b_i;
-			when "1110" => res_o <= a_i and b_i;
+			when "10000" => res_o <= a_i xor b_i;
+			when "10100" => res_o <= a_i srl to_integer(unsigned(b_i));
+			when "10110" => res_o <= std_logic_vector(signed(a_i) sra to_integer(unsigned(b_i)));
+			when "11000" => res_o <= a_i or b_i;
+			when "11100" => res_o <= a_i and b_i;
 			when others => res_o    <= (others => '0');
 		end case;
  
