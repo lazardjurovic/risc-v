@@ -58,6 +58,24 @@ signal wb_data : std_logic_vector(31 downto 0);
 
 begin
 
+Prog_cntr: process(clk,pc_en_i, pc_next_sel_i) 
+begin
+
+    if(rising_edge(clk)) then
+        
+        if(pc_en_i = '1') then
+            
+            program_counter <= std_logic_vector(unsigned(program_counter) + 4) when pc_next_sel_i = '0' else IF_ID_reg(95 downto 64);
+            
+        end if;
+        
+    end if;  
+
+end process;
+
+instr_mem_address_o <= program_counter;
+
+
 IF_ID: process(clk,instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i)
 begin
 
@@ -91,8 +109,6 @@ rd_address <= IF_ID_reg(11 downto 7);
 
 ID_EX: process(clk, rs1_data, rs2_data, immediate)
 begin
-
-    
 
 end process;
 
