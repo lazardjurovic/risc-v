@@ -98,6 +98,7 @@ begin
 		end if;
  
 		branch_condition_o <= '1' when branch_comp_a = branch_comp_b else '0';
+		instruction_o <= IF_ID_reg(95 downto 64);
  
 	end process;
 
