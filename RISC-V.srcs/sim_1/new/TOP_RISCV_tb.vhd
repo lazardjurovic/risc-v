@@ -9,7 +9,7 @@ end entity;
 architecture Behavioral of TOP_RISCV_tb is
 	-- Operand za pristup asemblerskom kodu programa
 	file RISCV_instructions : text open read_mode is
-	"../../../../../RISCV_tb/assembly_code.txt";
+	"C:\Users\lazar\Documents\risc-v\assembly_code.txt";
 	-- Globalni signali
 	signal clk   : std_logic := '0';
 	signal reset : std_logic;
@@ -27,6 +27,17 @@ architecture Behavioral of TOP_RISCV_tb is
 	signal dina_data_s, dinb_data_s   : std_logic_vector(31 downto 0);
 	signal douta_data_s, doutb_data_s : std_logic_vector(31 downto 0);
 	signal addra_data_32_s            : std_logic_vector(31 downto 0);
+	
+	
+function to_std_logic_vector(a : string) return std_logic_vector is
+    variable ret : std_logic_vector(a'length*8-1 downto 0);
+    begin
+    for i in a'range loop
+    ret(i*8+7 downto i*8) := std_logic_vector(to_unsigned(character'pos(a(i)), 8));
+    end loop;
+    return ret;
+end function to_std_logic_vector;
+
 begin
 	-- Memorija za instrukcije
 	-- Pristup A : Koristi se za inicijalizaciju memorije za instrukcije
@@ -109,7 +120,7 @@ begin
 								while (not endfile(RISCV_instructions))loop
 								readline(RISCV_instructions, row);
 								addra_instr_s <= std_logic_vector(to_unsigned(i, 10));
-								dina_instr_s  <= std_logic_vector(string(row));
+								dina_instr_s  <= to_std_logic_vector(string(row));
 								i := i + 4;
 								wait until rising_edge(clk);
 							end loop;
