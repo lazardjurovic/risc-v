@@ -63,8 +63,6 @@ signal rd_we_wb_s : std_logic;
 signal rd_address_mem_s : std_logic_vector(4 downto 0);
 signal rd_we_mem_s : std_logic;
 
-
-
 begin
 
     ID_EX : process(clk, reset, instruction_i)
@@ -85,6 +83,7 @@ begin
             alu_src_b_o <= ID_EX_reg (27);
             pc_next_sel_o <= branch_condition_i and branch_id_s;
             if_id_flush_o <= branch_condition_i and branch_id_s;
+           
    
     end process;
     
@@ -170,6 +169,29 @@ port map(
     funct7_i => ID_EX_reg(21 downto 15),
     --******** Datapath izlazi ********
     alu_op_o => alu_op_o
+);
+
+hazard: entity work.hazard_unit
+port map(
+    -- ulazni signali
+    rs1_address_id_i => instruction_i(19 downto 15),
+    rs2_address_id_i => instruction_i(24 downto 20),
+    rs1_in_use_i     => rs1_in_use_id_s,
+    rs2_in_use_i     => rs2_in_use_id_s,
+    branch_id_i      => branch_id_s,
+    rd_address_ex_i  => ID_EX_reg(14 downto 10),
+    mem_to_reg_ex_i  => ID_EX_reg(1),
+    rd_we_ex_i       => ID_EX_reg(3),
+    rd_address_mem_i => EX_MEM_reg(4 downto 0),
+    mem_to_reg_mem_i => EX_MEM_reg(0),
+    -- izlazni kontrolni signali
+    -- pc_en_o je signal dozvole rada za pc registar
+    pc_en_o => pc_en_o,
+    -- if_id_en_o je signal dozvole rada za if/id registar
+    if_id_en_o => if_id_en_o,
+    -- control_pass_o kontrolise da li ce u execute fazu biti prosledjeni
+    -- kontrolni signali iz ctrl_decoder-a ili sve nule
+    control_pass_o => control_pass_s
 );
 
 end behav;
