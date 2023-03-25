@@ -2,7 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all;
-use work.txt_util.all;
 entity TOP_RISCV_tb is
 	-- port ();
 end entity;
@@ -110,7 +109,7 @@ begin
 								while (not endfile(RISCV_instructions))loop
 								readline(RISCV_instructions, row);
 								addra_instr_s <= std_logic_vector(to_unsigned(i, 10));
-								dina_instr_s  <= to_std_logic_vector(string(row));
+								dina_instr_s  <= std_logic_vector(string(row));
 								i := i + 4;
 								wait until rising_edge(clk);
 							end loop;
