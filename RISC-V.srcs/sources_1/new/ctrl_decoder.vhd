@@ -43,7 +43,7 @@ begin
             rd_we_o <= '1';
             rs1_in_use_o <='1';
             rs2_in_use_o <='0'; -- only rs1 is used by instruction
-            alu_2bit_op_o <= "10";
+            alu_2bit_op_o <= "11";
         when "0000011" => -- Load
             branch_o <= '0';
             mem_to_reg_o <='1';

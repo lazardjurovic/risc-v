@@ -33,21 +33,32 @@ begin
                     else
                          alu_op_o <= "00010"; -- sub
                     end if;
-                when "001" => alu_op_o <= "00100"; -- sll, slli
-                when "010" => alu_op_o <= "01000"; -- slt, stli
-                when "011" => alu_op_o <= "01100"; -- sltu, sltiu
-                when "100" => alu_op_o <= "10000";
+                when "001" => alu_op_o <= "00100"; -- sll
+                when "010" => alu_op_o <= "01000"; -- slt
+                when "011" => alu_op_o <= "01100"; -- sltu
+                when "100" => alu_op_o <= "10000"; -- xor
                 when "101" => 
                     if(funct7_i(5) = '1') then
-                        alu_op_o <= "10110"; --sra, srai
+                        alu_op_o <= "10110"; --sra
                     else
-                        alu_op_o <= "10100"; -- srl, srli
+                        alu_op_o <= "10100"; -- srl
                     end if;
-                when "110" => alu_op_o <= "11000"; -- or, ori
-                when "111" => alu_op_o <= "11100"; -- and, andi
+                when "110" => alu_op_o <= "11000"; -- or
+                when "111" => alu_op_o <= "11100"; -- and
                 when others => alu_op_o <= (others => '1');
             end case;
-            
+        elsif(alu_2bit_op_i = "11") then    -- For I type instructions
+         case funct3_i is
+                when "000" => alu_op_o <= "00000"; -- addi
+                when "001" => alu_op_o <= "00100"; -- slli
+                when "010" => alu_op_o <= "01000"; -- stli
+                when "011" => alu_op_o <= "01100"; -- sltiu
+                when "100" => alu_op_o <= "10000"; -- xori
+                when "101" => alu_op_o <= "10100"; -- srli
+                when "110" => alu_op_o <= "11000"; -- ori
+                when "111" => alu_op_o <= "11100"; -- andi
+                when others => alu_op_o <= (others => '1');
+          end case;
         else
             alu_op_o <= (others =>'0');
         end if;
