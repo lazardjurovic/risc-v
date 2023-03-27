@@ -10,7 +10,7 @@ C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/TOP_RISCV.vhd,16797697
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/alu_decoder.vhd,1679761322,vhdl,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd,,,alu_decoder,,,,,,,,
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd,1679934881,vhdl2008,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/TOP_RISCV.vhd,,,control_path,,,,,,,,
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/ctrl_decoder.vhd,1679761218,vhdl,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd,,,ctrl_decoder,,,,,,,,
-C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/data_path.vhd,1679937524,vhdl2008,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/TOP_RISCV.vhd,,,data_path,,,,,,,,
+C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/data_path.vhd,1679942691,vhdl2008,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/TOP_RISCV.vhd,,,data_path,,,,,,,,
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/forwarding_unit.vhd,1679763977,vhdl,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd,,,forwarding_unit,,,,,,,,
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/hazard_unit.vhd,1679763813,vhdl,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd,,,hazard_unit,,,,,,,,
 C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/immediate.vhd,1679520006,vhdl2008,C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/data_path.vhd,,,immediate,,,,,,,,
