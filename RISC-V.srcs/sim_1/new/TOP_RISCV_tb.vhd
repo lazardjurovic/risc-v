@@ -111,20 +111,20 @@ begin
 					data_b_o => doutb_data_s
 				);
 
-					-- Top Modul - RISCV procesor jezgro
-					TOP_RISCV_1 : entity work.TOP_RISCV
-						port map
-						(
-							clk                 => clk, 
+-- Top Modul - RISCV procesor jezgro
+TOP_RISCV_1 : entity work.TOP_RISCV
+    port map
+    (
+        clk                 => clk, 
 
-							reset               => reset, 
-							instr_mem_read_i    => doutb_instr_s, 
-							instr_mem_address_o => addrb_instr_32_s, 
-							data_mem_we_o       => wea_data_s, 
-							data_mem_address_o  => addra_data_32_s, 
-							data_mem_read_i     => douta_data_s, 
-							data_mem_write_o    => dina_data_s
-						);
+        reset               => reset, 
+        instr_mem_read_i    => doutb_instr_s, 
+        instr_mem_address_o => addrb_instr_32_s, 
+        data_mem_we_o       => wea_data_s, 
+        data_mem_address_o  => addra_data_32_s, 
+        data_mem_read_i     => douta_data_s, 
+        data_mem_write_o    => dina_data_s
+    );
 							-- Inicijalizacija memorije za instrukcije
 							-- Program koji ce procesor izvrsavati se ucitava u memoriju
 							read_file_proc : process
