@@ -121,7 +121,7 @@ begin
 		
 		case alu_forward_a_i is
  
-			when "00" => alu_a <= ID_EX_reg(127 downto 96);
+			when "00" => alu_a <= ID_EX_reg(127 downto 96); -- rs1 data
 			when "01" => alu_a <= wb_forward_data;
 			when "10" => alu_a <= mem_forward_data;
 			when others => alu_a    <= (others => '0');
@@ -130,7 +130,7 @@ begin
  
 		case alu_forward_b_i is
  
-			when "00" => alu_b_intern <= ID_EX_reg(63 downto 32);
+			when "00" => alu_b_intern <= ID_EX_reg(95 downto 64); -- rs2 data
 			when "01" => alu_b_intern <= wb_forward_data;
 			when "10" => alu_b_intern <= mem_forward_data;
 			when others => alu_b_intern    <= (others => '0');
@@ -148,14 +148,14 @@ begin
 		else
 			if (falling_edge(clk)) then
  
-				EX_MEM_reg <= alu_out & ID_EX_reg(63 downto 32) & ID_EX_reg(127 downto 96);
+				EX_MEM_reg <= alu_out & ID_EX_reg(95 downto 64) & ID_EX_reg(31 downto 0); -- alu_out & rs2_data & instruction 
  
 			end if;
 		end if;
  
-		mem_forward_data   <= EX_MEM_reg(31 downto 0);
-		data_mem_address_o <= EX_MEM_reg(31 downto 0);
-		data_mem_write_o   <= ID_EX_reg(63 downto 32);
+		mem_forward_data   <= EX_MEM_reg(95 downto 64); -- alu out
+		data_mem_address_o <= EX_MEM_reg(95 downto 64); -- -||-
+		data_mem_write_o   <= ID_EX_reg(63 downto 32);  -- rs2 out
  
 
 	end process;
@@ -167,16 +167,16 @@ begin
 		else
 			if (falling_edge(clk)) then
  
-				MEM_WB_reg <= EX_MEM_reg(31 downto 0) & data_mem_read_i & EX_MEM_reg(95 downto 64);
+				MEM_WB_reg <= EX_MEM_reg(95 downto 64) & data_mem_read_i & EX_MEM_reg(31 downto 0);  -- alu out & mem data & instruction
  
 			end if;
 		end if;
     
 	end process;
 	
-    rd_data         <= MEM_WB_reg(31 downto 0) when mem_to_reg_i = '0' else data_mem_read_i;
-    wb_forward_data <= MEM_WB_reg(31 downto 0) when mem_to_reg_i = '0' else data_mem_read_i;
-    rd_address      <= MEM_WB_reg(75 downto 71);
+    rd_data         <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i; -- alu out or mem data
+    wb_forward_data <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i;
+    rd_address      <= MEM_WB_reg(11 downto 7); -- rd field in instruction 
 	
 -- Building blocks from other files
 

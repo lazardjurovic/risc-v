@@ -60,6 +60,7 @@ signal_gen: process
 begin
 
     reset_s <= '1';
+    data_mem_read_i_s <= (others => '0');
     instr_mem_read_i_s <= "00000000000100000000000010010011";
     wait for 100ns;
     instr_mem_read_i_s <= (others => '0');
