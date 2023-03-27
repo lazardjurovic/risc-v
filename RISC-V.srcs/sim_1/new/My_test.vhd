@@ -62,10 +62,10 @@ begin
     reset_s <= '0';
     data_mem_read_i_s <= (others => '0');
     
-    wait for 200ns;
+    wait for 150ns;
     reset_s<= '1';
     instr_mem_read_i_s <= "00000000000100000000000010010011";
-    wait for 100ns;
+    wait for 200ns;
     instr_mem_read_i_s <= (others => '0');
     
     

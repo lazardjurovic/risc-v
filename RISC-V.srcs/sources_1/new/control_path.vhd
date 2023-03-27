@@ -122,7 +122,7 @@ begin
         end if;
         
         mem_to_reg_o <= MEM_WB_reg(6);
-        rd_we_o <= MEM_WB_reg(5);
+        rd_we_id_s <= MEM_WB_reg(5);
         rd_we_wb_s <= MEM_WB_reg(5);
         rd_address_wb_s <= MEM_WB_reg(4 downto 0);
         
