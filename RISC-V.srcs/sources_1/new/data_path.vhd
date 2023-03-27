@@ -82,7 +82,7 @@ begin
 		else
 			if (if_id_en_i = '1' and falling_edge(clk)) then
 			-- ISSUE: getting 'X' fix addition
-				IF_ID_reg <= instr_mem_read_i & program_counter & std_logic_vector(signed(immediate(30 downto 0) & '0') + signed(IF_ID_reg(63 downto 32)));
+				IF_ID_reg <= program_counter & std_logic_vector(signed(immediate(30 downto 0) & '0') + signed(IF_ID_reg(63 downto 32))) & instr_mem_read_i;
 			end if;
 		end if;
  
@@ -99,12 +99,13 @@ begin
 		end if;
  
 		branch_condition_o <= '1' when branch_comp_a = branch_comp_b else '0';
-		instruction_o <= IF_ID_reg(95 downto 64);
+		instruction_o <= IF_ID_reg(31 downto 0);
+		
+        rs1_address <= IF_ID_reg(19 downto 15);
+        rs2_address <= IF_ID_reg(24 downto 20);
  
 	end process;
 
-	rs1_address <= IF_ID_reg(83 downto 79);
-	rs2_address <= IF_ID_reg(88 downto 84);
 
 	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i, alu_src_b_i)
 	begin
