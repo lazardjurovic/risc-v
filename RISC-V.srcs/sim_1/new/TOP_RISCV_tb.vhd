@@ -29,6 +29,28 @@ architecture Behavioral of TOP_RISCV_tb is
 	signal dina_data_s, dinb_data_s   : std_logic_vector(31 downto 0);
 	signal douta_data_s, doutb_data_s : std_logic_vector(31 downto 0);
 	signal addra_data_32_s            : std_logic_vector(31 downto 0);
+	
+
+
+function convert(vector_string: string) return std_logic_vector is
+    variable vector: std_logic_vector(31 downto 0) := (others => '0');
+    variable ascii_char : character;
+begin
+
+
+    for i in 1 to 32 loop
+        ascii_char := character(vector_string(i));
+        if(ascii_char = '1') then
+            vector(32-i) := '1';
+        else
+            vector(32-1) := '0';
+        end if;
+    end loop;    
+    
+    
+return vector;
+end function;
+	
 begin
 	-- Memorija za instrukcije
 	-- Pristup A : Koristi se za inicijalizaciju memorije za instrukcije
@@ -114,7 +136,8 @@ begin
 								while (not endfile(RISCV_instructions))loop
 								readline(RISCV_instructions, row);
 								addra_instr_s <= std_logic_vector(to_unsigned(i, 10));
-								dina_instr_s  <= std_logic_vector(to_unsigned(integer'value(string(row)),32));
+								
+								dina_instr_s  <= convert(string(row));
 								i := i + 4;
 								wait until rising_edge(clk);
 							end loop;

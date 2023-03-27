@@ -77,7 +77,7 @@ begin
 	instr_mem_address_o <= program_counter;
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i)
 	begin
-		if (if_id_flush_i = '1' or reset = '1') then
+		if (if_id_flush_i = '1' or reset = '0') then
 			IF_ID_reg <= (others => '0');
 		else
 			if (if_id_en_i = '1' and falling_edge(clk)) then
@@ -107,7 +107,7 @@ begin
 
 	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i, alu_src_b_i)
 	begin
-		if (reset = '1') then
+		if (reset = '0') then
 			ID_EX_reg <= (others => '0');
 		else
 			if (falling_edge(clk)) then
@@ -140,7 +140,7 @@ begin
 
 	EX_MEM : process (reset, clk, alu_out, ID_EX_reg)
 	begin
-		if (reset = '1') then
+		if (reset = '0') then
 			EX_MEM_reg <= (others => '0');
 		else
 			if (falling_edge(clk)) then
@@ -159,7 +159,7 @@ begin
 
 	MEM_WB : process (reset, clk, EX_MEM_reg)
 	begin
-		if (reset = '1') then
+		if (reset = '0') then
 			MEM_WB_reg <= (others => '0');
 		else
 			if (falling_edge(clk)) then

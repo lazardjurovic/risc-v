@@ -31,7 +31,7 @@ architecture behav of register_bank is
 begin
 	process (clk, reset, rs1_address_i, rs2_address_i, rd_address_i, rd_we_i)
 	begin
-		if (reset = '1') then
+		if (reset = '0') then
 			bank <= (others => (others => '0'));
 		else
 			if (rising_edge(clk)) then

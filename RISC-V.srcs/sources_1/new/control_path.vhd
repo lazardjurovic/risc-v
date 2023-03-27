@@ -68,7 +68,7 @@ begin
     ID_EX : process(clk, reset, instruction_i)
     begin
     
-        if(reset = '0') then
+        if(reset = '1') then
             if(falling_edge(clk)) then
                 
                 ID_EX_reg <= control_pass_s & mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
@@ -90,14 +90,15 @@ begin
     EX_MEM: process(clk,reset, ID_EX_reg)
     begin
         
-        if(reset = '0') then
+        if(reset = '1') then
             
             if(falling_edge(clk)) then
                 
                 EX_MEM_reg <= ID_EX_reg(1) & ID_EX_reg(2) & ID_EX_reg(3) & ID_EX_reg(14 downto 10);
                 
             end if; 
-            
+        else
+            EX_MEM_reg <= (others => '0');    
         end if;
         
             data_mem_we_o <= "1111" when EX_MEM_reg(6) = '1' else "0000"; -- data_mem mux for we
@@ -109,13 +110,15 @@ begin
     MEM_WB: process(clk,reset, EX_MEM_reg)
     begin
     
-        if(reset = '0') then
+        if(reset = '1') then
         
             if(falling_edge(clk)) then
                 
                 MEM_WB_reg <= EX_MEM_reg(7) & EX_MEM_reg(6) & EX_MEM_reg(4 downto 0);
                 
             end if; 
+        else
+            MEM_WB_reg <= (others => '0');
         end if;
         
         mem_to_reg_o <= MEM_WB_reg(6);
