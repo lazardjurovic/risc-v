@@ -81,6 +81,7 @@ begin
 			IF_ID_reg <= (others => '0');
 		else
 			if (if_id_en_i = '1' and falling_edge(clk)) then
+			-- ISSUE: getting 'X' fix addition
 				IF_ID_reg <= instr_mem_read_i & program_counter & std_logic_vector(signed(immediate(30 downto 0) & '0') + signed(IF_ID_reg(63 downto 32)));
 			end if;
 		end if;
@@ -102,8 +103,8 @@ begin
  
 	end process;
 
-	rs1_address <= IF_ID_reg(19 downto 15);
-	rs2_address <= IF_ID_reg(24 downto 20);
+	rs1_address <= IF_ID_reg(83 downto 79);
+	rs2_address <= IF_ID_reg(88 downto 84);
 
 	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i, alu_src_b_i)
 	begin

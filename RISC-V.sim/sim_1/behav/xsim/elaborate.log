@@ -1,6 +1,6 @@
 Vivado Simulator v2022.1
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: C:/Xilinx/Vivado/2022.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot TOP_RISCV_tb_behav xil_defaultlib.TOP_RISCV_tb -log elaborate.log 
+Running: C:/Xilinx/Vivado/2022.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot My_test_behav xil_defaultlib.My_test -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
 WARNING: [VRFC 10-8856] comparison between unequal length arrays always returns TRUE; left argument length 5 is different from right argument length 4 for 'std_logic_vector_93' array [C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/forwarding_unit.vhd:37]
@@ -14,9 +14,7 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
-Compiling package ieee.std_logic_textio
 Compiling package ieee.math_real
-Compiling architecture behavioral of entity xil_defaultlib.BRAM [bram_default]
 Compiling architecture behav of entity xil_defaultlib.register_bank [register_bank_default]
 Compiling architecture behav of entity xil_defaultlib.immediate [immediate_default]
 Compiling architecture behav of entity xil_defaultlib.ALU [alu_default]
@@ -27,5 +25,5 @@ Compiling architecture behav of entity xil_defaultlib.alu_decoder [alu_decoder_d
 Compiling architecture behav of entity xil_defaultlib.hazard_unit [hazard_unit_default]
 Compiling architecture behav of entity xil_defaultlib.control_path [control_path_default]
 Compiling architecture structural of entity xil_defaultlib.TOP_RISCV [top_riscv_default]
-Compiling architecture behavioral of entity xil_defaultlib.top_riscv_tb
-Built simulation snapshot TOP_RISCV_tb_behav
+Compiling architecture behavioral of entity xil_defaultlib.my_test
+Built simulation snapshot My_test_behav

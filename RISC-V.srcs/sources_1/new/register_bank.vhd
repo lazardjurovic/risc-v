@@ -29,7 +29,7 @@ architecture behav of register_bank is
 	type regbank is array (0 to 31) of std_logic_vector(WIDTH - 1 downto 0);
 	signal bank : regbank := (others => (others => '0'));
 begin
-	process (clk, reset, rs1_address_i, rs2_address_i, rd_address_i, rd_we_i)
+	process (clk, reset, rs1_address_i, rs2_address_i, rd_address_i, rd_we_i,rd_data_i)
 	begin
 		if (reset = '0') then
 			bank <= (others => (others => '0'));
