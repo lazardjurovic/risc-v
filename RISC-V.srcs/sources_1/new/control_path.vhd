@@ -39,29 +39,29 @@ signal MEM_WB_reg : std_logic_vector(6 downto 0);
 
 -- control decoder signals
 -- innputs
-signal mem_to_reg_id_s : std_logic;
-signal data_mem_we_id_s : std_logic;
-signal rd_we_id_s : std_logic;
-signal alu_src_b_id_s : std_logic;
-signal branch_id_s : std_logic;
-signal alu_2bit_op_id_s : std_logic_vector(1 downto 0);
--- outputs
-signal rs1_in_use_id_s : std_logic;
-signal rs2_in_use_id_s : std_logic;
+signal mem_to_reg_id_s : std_logic := '0';
+signal data_mem_we_id_s : std_logic := '0';
+signal rd_we_id_s : std_logic := '0';
+signal alu_src_b_id_s : std_logic := '0';
+signal branch_id_s : std_logic := '0' ;
+signal alu_2bit_op_id_s : std_logic_vector(1 downto 0) := (others =>'0');
+-- outputs 
+signal rs1_in_use_id_s : std_logic := '0';
+signal rs2_in_use_id_s : std_logic := '0';
 
 -- hazard unit signals
 -- inputs
 -- outputs
-signal control_pass_s : std_logic;
+signal control_pass_s : std_logic := '0';
  
 -- forwarding unit signals
 -- inputs
-signal funct3_ex_s : std_logic_vector(2 downto 0);
-signal funct7_ex_s : std_logic_vector(6 downto 0);
-signal rd_address_wb_s : std_logic_vector(4 downto 0);
-signal rd_we_wb_s : std_logic;
-signal rd_address_mem_s : std_logic_vector(4 downto 0);
-signal rd_we_mem_s : std_logic;
+signal funct3_ex_s : std_logic_vector(2 downto 0) := (others =>'0');
+signal funct7_ex_s : std_logic_vector(6 downto 0) := (others =>'0');
+signal rd_address_wb_s : std_logic_vector(4 downto 0) := (others =>'0');
+signal rd_we_wb_s : std_logic := '0';
+signal rd_address_mem_s : std_logic_vector(4 downto 0) := (others =>'0');
+signal rd_we_mem_s : std_logic := '0';
 
 begin
 
@@ -94,7 +94,7 @@ begin
             
             if(falling_edge(clk)) then
                 
-                EX_MEM_reg <= ID_EX_reg(1) & ID_EX_reg(2) & ID_EX_reg(3) & ID_EX_reg(14 downto 10);
+                EX_MEM_reg <= ID_EX_reg(30) & ID_EX_reg(29) & ID_EX_reg(28) & ID_EX_reg(14 downto 10); -- mem_to_reg & data_mem_we & rd_ex & rd_address
                 
             end if; 
         else
@@ -123,6 +123,9 @@ begin
         
         mem_to_reg_o <= MEM_WB_reg(6);
         rd_we_o <= MEM_WB_reg(5);
+        rd_we_wb_s <= MEM_WB_reg(5);
+        rd_address_wb_s <= MEM_WB_reg(4 downto 0);
+        
 
     end process;
     

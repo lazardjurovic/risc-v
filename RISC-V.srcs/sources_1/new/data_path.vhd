@@ -75,6 +75,7 @@ begin
 	end process;
 
 	instr_mem_address_o <= program_counter;
+	
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i)
 	begin
 		if (if_id_flush_i = '1' or reset = '0') then
@@ -99,12 +100,12 @@ begin
 		end if;
  
 		branch_condition_o <= '1' when branch_comp_a = branch_comp_b else '0';
-		instruction_o <= IF_ID_reg(31 downto 0);
-		
         rs1_address <= IF_ID_reg(19 downto 15);
         rs2_address <= IF_ID_reg(24 downto 20);
  
 	end process;
+	
+    instruction_o <= IF_ID_reg(31 downto 0);
 
 
 	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i, alu_src_b_i)
