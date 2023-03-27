@@ -2,6 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all;
+use ieee.std_logic_textio.all;
+
 entity TOP_RISCV_tb is
 	-- port ();
 end entity;
@@ -27,17 +29,6 @@ architecture Behavioral of TOP_RISCV_tb is
 	signal dina_data_s, dinb_data_s   : std_logic_vector(31 downto 0);
 	signal douta_data_s, doutb_data_s : std_logic_vector(31 downto 0);
 	signal addra_data_32_s            : std_logic_vector(31 downto 0);
-	
-	
-function to_std_logic_vector(a : string) return std_logic_vector is
-    variable ret : std_logic_vector(a'length*8-1 downto 0);
-    begin
-    for i in a'range loop
-    ret(i*8+7 downto i*8) := std_logic_vector(to_unsigned(character'pos(a(i)), 8));
-    end loop;
-    return ret;
-end function to_std_logic_vector;
-
 begin
 	-- Memorija za instrukcije
 	-- Pristup A : Koristi se za inicijalizaciju memorije za instrukcije
@@ -52,7 +43,8 @@ begin
 	instruction_mem : entity work.BRAM(behavioral)
 
 			generic map(WADDR => 10)
-		port map(
+		port map
+		(
 			clk => clk, 
 			-- pristup A
 			en_a_i   => ena_instr_s, 
@@ -80,7 +72,8 @@ begin
 			-- Instanca:
 			data_mem : entity work.BRAM(behavioral)
 					generic map(WADDR => 10)
-				port map(
+				port map
+				(
 					clk => clk, 
 					-- pristup A
 					en_a_i   => ena_data_s, 
@@ -98,7 +91,8 @@ begin
 
 					-- Top Modul - RISCV procesor jezgro
 					TOP_RISCV_1 : entity work.TOP_RISCV
-						port map(
+						port map
+						(
 							clk                 => clk, 
 
 							reset               => reset, 
@@ -120,7 +114,7 @@ begin
 								while (not endfile(RISCV_instructions))loop
 								readline(RISCV_instructions, row);
 								addra_instr_s <= std_logic_vector(to_unsigned(i, 10));
-								dina_instr_s  <= to_std_logic_vector(string(row));
+								dina_instr_s  <= std_logic_vector(to_unsigned(integer'value(string(row)),32));
 								i := i + 4;
 								wait until rising_edge(clk);
 							end loop;

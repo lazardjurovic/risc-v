@@ -14,6 +14,7 @@ Compiling package std.standard
 Compiling package std.textio
 Compiling package ieee.std_logic_1164
 Compiling package ieee.numeric_std
+Compiling package ieee.std_logic_textio
 Compiling package ieee.math_real
 Compiling architecture behavioral of entity xil_defaultlib.BRAM [bram_default]
 Compiling architecture behav of entity xil_defaultlib.register_bank [register_bank_default]
