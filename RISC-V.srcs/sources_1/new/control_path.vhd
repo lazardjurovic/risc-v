@@ -65,7 +65,7 @@ signal rd_we_mem_s : std_logic := '0';
 
 begin
 
-    ID_EX : process(clk, reset, instruction_i)
+    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg)
     begin
     
         if(reset = '1') then
@@ -114,7 +114,7 @@ begin
         
             if(falling_edge(clk)) then
                 
-                MEM_WB_reg <= EX_MEM_reg(7) & EX_MEM_reg(6) & EX_MEM_reg(4 downto 0);
+                MEM_WB_reg <= EX_MEM_reg(7) & EX_MEM_reg(5) & EX_MEM_reg(4 downto 0);
                 
             end if; 
         else
@@ -122,7 +122,7 @@ begin
         end if;
         
         mem_to_reg_o <= MEM_WB_reg(6);
-        rd_we_id_s <= MEM_WB_reg(5);
+        rd_we_o <= MEM_WB_reg(5);
         rd_we_wb_s <= MEM_WB_reg(5);
         rd_address_wb_s <= MEM_WB_reg(4 downto 0);
         

@@ -108,14 +108,14 @@ begin
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
         when others =>
-            branch_o <= 'X';
-            mem_to_reg_o <='X';
-            data_mem_we_o <='X';
-            alu_src_b_o <='X';
-            rd_we_o <= 'X';
-            rs1_in_use_o <='X';
-            rs2_in_use_o <='X';
-            alu_2bit_op_o <= "XX";
+            branch_o <= '0';
+            mem_to_reg_o <='0';
+            data_mem_we_o <='0';
+            alu_src_b_o <='0';
+            rd_we_o <= '0';
+            rs1_in_use_o <='0';
+            rs2_in_use_o <='0';
+            alu_2bit_op_o <= "00";
         end case;
         
     end process;
