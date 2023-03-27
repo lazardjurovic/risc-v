@@ -66,10 +66,12 @@ begin
     reset_s<= '1';
     instr_mem_read_i_s <= "00000000000100000000000010010011";
     wait for 200ns;
+    instr_mem_read_i_s <= "00000000001000000000000100010011";
+    wait for 200ns;
+    instr_mem_read_i_s <= "00000000000100010000000110110011";
+    wait for 200ns;
     instr_mem_read_i_s <= (others => '0');
     
-    
- 
 
 wait;
 end process;
