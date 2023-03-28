@@ -76,7 +76,7 @@ begin
 
 	instr_mem_address_o <= program_counter;
 	
-	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i)
+	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg)
 	begin
 		if (if_id_flush_i = '1' or reset = '0') then
 			IF_ID_reg <= (others => '0');
@@ -108,7 +108,7 @@ begin
     instruction_o <= IF_ID_reg(31 downto 0);
 
 
-	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg, alu_forward_a_i, alu_forward_b_i, alu_src_b_i)
+	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg,alu_forward_a_i,alu_forward_b_i,wb_forward_data,mem_forward_data, ID_EX_reg, alu_src_b_i, alu_b_intern)
 	begin
 		if (reset = '0') then
 			ID_EX_reg <= (others => '0');
@@ -119,7 +119,7 @@ begin
  
 			end if;
 		end if;
-		
+
 		case alu_forward_a_i is
  
 			when "00" => alu_a <= ID_EX_reg(127 downto 96); -- rs1 data
@@ -142,7 +142,7 @@ begin
 
 	end process;
 
-	EX_MEM : process (reset, clk, alu_out, ID_EX_reg)
+	EX_MEM : process (reset, clk, alu_out, ID_EX_reg, EX_MEM_reg)
 	begin
 		if (reset = '0') then
 			EX_MEM_reg <= (others => '0');

@@ -28,7 +28,7 @@ begin
             
             case funct3_i is
                 when "000" =>
-                    if(funct7_i(5) = '1') then
+                    if(funct7_i(5) = '0') then
                         alu_op_o <= "00000"; -- add
                     else
                          alu_op_o <= "00010"; -- sub

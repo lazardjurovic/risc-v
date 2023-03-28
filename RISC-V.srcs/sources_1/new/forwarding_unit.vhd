@@ -33,17 +33,8 @@ begin
     
         alu_forward_a_o <= "00";
         alu_forward_b_o <= "00";   
-            
-        if(rd_we_mem_i = '1' and rd_address_mem_i /= "0000") then -- forwarding from mem phase
-            if(rs1_address_ex_i = rd_address_mem_i) then
-                alu_forward_a_o <= "10";
-            end if; 
-            
-            if(rs2_address_ex_i = rd_address_mem_i) then
-                alu_forward_b_o <= "10";
-            end if;   
-            
-        elsif(rd_we_wb_i = '1' and rd_address_wb_i /= "0000") then  -- forwarding from wb phase
+          
+        if(rd_we_wb_i = '1' and rd_address_wb_i /= "00000") then  -- forwarding from wb phase
             if(rs1_address_ex_i = rd_address_wb_i) then
                 alu_forward_a_o <= "01";  
             end if; 
@@ -52,14 +43,23 @@ begin
                 alu_forward_b_o <= "01";
             end if;
         end if;
-        
-        
+          
+        if(rd_we_mem_i = '1' and rd_address_mem_i /= "00000") then -- forwarding from mem phase
+            if(rs1_address_ex_i = rd_address_mem_i) then
+                alu_forward_a_o <= "10";
+            end if; 
+            
+            if(rs2_address_ex_i = rd_address_mem_i) then
+                alu_forward_b_o <= "10";
+            end if;   
+         end if;   
+               
     -- Branch forwarding 
     
     branch_forward_a_o <= '0';
     branch_forward_b_o <= '0';   
       
-    if(rd_we_mem_i = '1' and rd_address_mem_i /= "0000") then
+    if(rd_we_mem_i = '1' and rd_address_mem_i /= "00000") then
         
         if(rs1_address_id_i = rd_address_mem_i) then
             branch_forward_a_o <= '1';

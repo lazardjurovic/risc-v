@@ -65,7 +65,7 @@ signal rd_we_mem_s : std_logic := '0';
 
 begin
 
-    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg)
+    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_condition_i, branch_id_s)
     begin
     
         if(reset = '1') then
@@ -87,7 +87,7 @@ begin
    
     end process;
     
-    EX_MEM: process(clk,reset, ID_EX_reg)
+    EX_MEM: process(clk,reset, ID_EX_reg, EX_MEM_reg)
     begin
         
         if(reset = '1') then
@@ -107,7 +107,7 @@ begin
     
     end process;
     
-    MEM_WB: process(clk,reset, EX_MEM_reg)
+    MEM_WB: process(clk,reset, EX_MEM_reg, MEM_WB_reg)
     begin
     
         if(reset = '1') then
