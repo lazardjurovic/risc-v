@@ -66,10 +66,12 @@ begin
 		if (rising_edge(clk)) then
  
 			if (pc_en_i = '1') then
- 
-				program_counter <= std_logic_vector(unsigned(program_counter) + 4) when pc_next_sel_i = '0' else
-				                   IF_ID_reg(95 downto 64);
- 
+                case pc_next_sel_i is
+                    when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
+                    when '1' => program_counter <= IF_ID_reg(63 downto 32);
+                    when others => program_counter <= (others => '0');
+                
+                end case;
 			end if;
  
 		end if; 

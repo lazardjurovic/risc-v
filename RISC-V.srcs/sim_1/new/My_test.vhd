@@ -74,7 +74,7 @@ begin
     wait for 200ns;
     instr_mem_read_i_s <= "00000000000000000010001010010111";
     wait for 200ns;
-    instr_mem_read_i_s <= "00000000001000000000001101101111";
+    instr_mem_read_i_s <= "00000000001000000000001101101111"; -- jal x6 0x00003
     wait for 200ns;
     instr_mem_read_i_s <= (others => '0');
     
