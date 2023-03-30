@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenRun Id="impl_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1680183234">
+  <File Type="ROUTE-PWR" Name="TOP_RISCV_power_routed.rpt"/>
+  <File Type="PA-TCL" Name="TOP_RISCV.tcl"/>
+  <File Type="BITSTR-MMI" Name="TOP_RISCV.mmi"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="TOP_RISCV_methodology_drc_opted.rpt"/>
+  <File Type="INIT-TIMING" Name="TOP_RISCV_timing_summary_init.rpt"/>
+  <File Type="ROUTE-PWR-SUM" Name="TOP_RISCV_power_summary_routed.pb"/>
+  <File Type="REPORTS-TCL" Name="TOP_RISCV_reports.tcl"/>
+  <File Type="OPT-TIMING" Name="TOP_RISCV_timing_summary_opted.rpt"/>
+  <File Type="OPT-DCP" Name="TOP_RISCV_opt.dcp"/>
+  <File Type="OPT-DRC" Name="TOP_RISCV_drc_opted.rpt"/>
+  <File Type="OPT-HWDEF" Name="TOP_RISCV.hwdef"/>
+  <File Type="PWROPT-DCP" Name="TOP_RISCV_pwropt.dcp"/>
+  <File Type="PWROPT-DRC" Name="TOP_RISCV_drc_pwropted.rpt"/>
+  <File Type="PWROPT-TIMING" Name="TOP_RISCV_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="TOP_RISCV_placed.dcp"/>
+  <File Type="PLACE-IO" Name="TOP_RISCV_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="TOP_RISCV_clock_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL" Name="TOP_RISCV_utilization_placed.rpt"/>
+  <File Type="PLACE-UTIL-PB" Name="TOP_RISCV_utilization_placed.pb"/>
+  <File Type="PLACE-CTRL" Name="TOP_RISCV_control_sets_placed.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="TOP_RISCV_incremental_reuse_placed.rpt"/>
+  <File Type="PLACE-PRE-SIMILARITY" Name="TOP_RISCV_incremental_reuse_pre_placed.rpt"/>
+  <File Type="BG-BIN" Name="TOP_RISCV.bin"/>
+  <File Type="PLACE-TIMING" Name="TOP_RISCV_timing_summary_placed.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="TOP_RISCV_postplace_pwropt.dcp"/>
+  <File Type="BITSTR-MSK" Name="TOP_RISCV.msk"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="TOP_RISCV_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="TOP_RISCV_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="TOP_RISCV_drc_physopted.rpt"/>
+  <File Type="BITSTR-RBT" Name="TOP_RISCV.rbt"/>
+  <File Type="PHYSOPT-TIMING" Name="TOP_RISCV_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="TOP_RISCV_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="TOP_RISCV_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="TOP_RISCV_routed_bb.dcp"/>
+  <File Type="ROUTE-DRC" Name="TOP_RISCV_drc_routed.rpt"/>
+  <File Type="ROUTE-DRC-PB" Name="TOP_RISCV_drc_routed.pb"/>
+  <File Type="ROUTE-DRC-RPX" Name="TOP_RISCV_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="TOP_RISCV_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="TOP_RISCV_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="TOP_RISCV_methodology_drc_routed.pb"/>
+  <File Type="ROUTE-PWR-RPX" Name="TOP_RISCV_power_routed.rpx"/>
+  <File Type="ROUTE-STATUS" Name="TOP_RISCV_route_status.rpt"/>
+  <File Type="ROUTE-STATUS-PB" Name="TOP_RISCV_route_status.pb"/>
+  <File Type="ROUTE-TIMINGSUMMARY" Name="TOP_RISCV_timing_summary_routed.rpt"/>
+  <File Type="ROUTE-TIMING-PB" Name="TOP_RISCV_timing_summary_routed.pb"/>
+  <File Type="ROUTE-TIMING-RPX" Name="TOP_RISCV_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="TOP_RISCV_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="TOP_RISCV_clock_utilization_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW" Name="TOP_RISCV_bus_skew_routed.rpt"/>
+  <File Type="ROUTE-BUS-SKEW-PB" Name="TOP_RISCV_bus_skew_routed.pb"/>
+  <File Type="ROUTE-BUS-SKEW-RPX" Name="TOP_RISCV_bus_skew_routed.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-DCP" Name="TOP_RISCV_postroute_physopt.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="TOP_RISCV_postroute_physopt_bb.dcp"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="TOP_RISCV_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="TOP_RISCV_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="TOP_RISCV_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="TOP_RISCV_bus_skew_postroute_physopted.rpt"/>
+  <File Type="BG-BIT" Name="TOP_RISCV.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="TOP_RISCV_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="TOP_RISCV_bus_skew_postroute_physopted.rpx"/>
+  <File Type="BITSTR-NKY" Name="TOP_RISCV.nky"/>
+  <File Type="BITSTR-BMM" Name="TOP_RISCV_bd.bmm"/>
+  <File Type="PDI-FILE" Name="TOP_RISCV.pdi"/>
+  <File Type="RCFI_FILE" Name="TOP_RISCV.rcfi"/>
+  <File Type="CFI_FILE" Name="TOP_RISCV.cfi"/>
+  <File Type="RNPI_FILE" Name="TOP_RISCV.rnpi"/>
+  <File Type="NPI_FILE" Name="TOP_RISCV.npi"/>
+  <File Type="RBD_FILE" Name="TOP_RISCV.rbd"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="TOP_RISCV.ltx"/>
+  <File Type="BITSTR-SYSDEF" Name="TOP_RISCV.sysdef"/>
+  <File Type="BG-BGN" Name="TOP_RISCV.bgn"/>
+  <File Type="BG-DRC" Name="TOP_RISCV.drc"/>
+  <File Type="RDI-RDI" Name="TOP_RISCV.vdi"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="ROUTE-RQS" Name="TOP_RISCV_routed.rqs"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS" Name="TOP_RISCV_postroute_physopted.rqs"/>
+  <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
+  <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
+    <Filter Type="Srcs"/>
+    <File Path="$PSRCDIR/sources_1/new/register_bank.vhd">
+      <FileInfo SFType="VHDL2008">
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/immediate.vhd">
+      <FileInfo SFType="VHDL2008">
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/ALU.vhd">
+      <FileInfo SFType="VHDL2008">
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/data_path.vhd">
+      <FileInfo SFType="VHDL2008">
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/ctrl_decoder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/forwarding_unit.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/alu_decoder.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/hazard_unit.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/control_path.vhd">
+      <FileInfo SFType="VHDL2008">
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/TOP_RISCV.vhd">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/BRAM.vhd">
+      <FileInfo>
+        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <Config>
+      <Option Name="DesignMode" Val="RTL"/>
+      <Option Name="TopModule" Val="TOP_RISCV"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="constrs_in" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <Filter Type="Constrs"/>
+    <Config>
+      <Option Name="ConstrsType" Val="XDC"/>
+    </Config>
+  </FileSet>
+  <FileSet Name="utils" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+    <Filter Type="Utils"/>
+    <Config>
+      <Option Name="TopAutoSet" Val="TRUE"/>
+    </Config>
+  </FileSet>
+  <Strategy Version="1" Minor="2">
+    <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2022"/>
+    <Step Id="init_design"/>
+    <Step Id="opt_design"/>
+    <Step Id="power_opt_design"/>
+    <Step Id="place_design"/>
+    <Step Id="post_place_power_opt_design"/>
+    <Step Id="phys_opt_design"/>
+    <Step Id="route_design"/>
+    <Step Id="post_route_phys_opt_design"/>
+    <Step Id="write_bitstream"/>
+  </Strategy>
+</GenRun>

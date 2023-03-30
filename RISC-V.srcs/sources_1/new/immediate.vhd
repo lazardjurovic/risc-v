@@ -8,8 +8,8 @@ entity immediate is
 	);
 end entity;
 architecture behav of immediate is
-	signal ones  : std_logic_vector(19 downto 0) := (others => '1');
-	signal zeros : std_logic_vector(19 downto 0) := (others => '0');
+	constant ones  : std_logic_vector(19 downto 0) := (others => '1');
+	constant zeros : std_logic_vector(19 downto 0) := (others => '0');
 begin
 	process (instruction_i) is
 	begin

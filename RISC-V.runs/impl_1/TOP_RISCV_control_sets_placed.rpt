@@ -1,0 +1,113 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.1 (win64) Build 3526262 Mon Apr 18 15:48:16 MDT 2022
+| Date         : Thu Mar 30 15:34:28 2023
+| Host         : Lazar running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file TOP_RISCV_control_sets_placed.rpt
+| Design       : TOP_RISCV
+| Device       : xc7k70t
+--------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    35 |
+|    Minimum number of control sets                        |    35 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |     9 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    35 |
+| >= 0 to < 4        |     0 |
+| >= 4 to < 6        |     0 |
+| >= 6 to < 8        |     0 |
+| >= 8 to < 10       |     0 |
+| >= 10 to < 12      |     0 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     0 |
+| >= 16              |    35 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |               0 |            0 |
+| No           | No                    | Yes                    |             383 |          148 |
+| No           | Yes                   | No                     |               0 |            0 |
+| Yes          | No                    | No                     |              32 |           12 |
+| Yes          | No                    | Yes                    |            1024 |          456 |
+| Yes          | Yes                   | No                     |               0 |            0 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++----------------+------------------------------------+----------------------------+------------------+----------------+--------------+
+|  Clock Signal  |            Enable Signal           |      Set/Reset Signal      | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------+------------------------------------+----------------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[18]    | data/Reg_bank/reset        |               14 |             32 |         2.29 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[5]     | data/Reg_bank/reset        |               16 |             32 |         2.00 |
+|  clk_IBUF_BUFG | data/pc_en_s                       |                            |               12 |             32 |         2.67 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[28]    | data/Reg_bank/reset        |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[29]    | data/Reg_bank/reset        |               14 |             32 |         2.29 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[8]     | data/Reg_bank/reset        |               22 |             32 |         1.45 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[10]    | data/Reg_bank/reset        |               14 |             32 |         2.29 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[0]     | data/Reg_bank/reset        |               12 |             32 |         2.67 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[25]    | data/Reg_bank/reset        |                7 |             32 |         4.57 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[2]     | data/Reg_bank/reset        |               18 |             32 |         1.78 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[9]     | data/Reg_bank/reset        |               25 |             32 |         1.28 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[30]    | data/Reg_bank/reset        |               22 |             32 |         1.45 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[19]    | data/Reg_bank/reset        |                7 |             32 |         4.57 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[3]     | data/Reg_bank/reset        |               14 |             32 |         2.29 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[11]    | data/Reg_bank/reset        |               14 |             32 |         2.29 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[13]    | data/Reg_bank/reset        |               11 |             32 |         2.91 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[17]    | data/Reg_bank/reset        |               11 |             32 |         2.91 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[7]     | data/Reg_bank/reset        |               23 |             32 |         1.39 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[24]    | data/Reg_bank/reset        |                6 |             32 |         5.33 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[4]     | data/Reg_bank/reset        |               20 |             32 |         1.60 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[16]    | data/Reg_bank/reset        |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[14]    | data/Reg_bank/reset        |               10 |             32 |         3.20 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[22]    | data/Reg_bank/reset        |               21 |             32 |         1.52 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank[31][31]_i_1_n_0 | data/Reg_bank/reset        |               22 |             32 |         1.45 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[12]    | data/Reg_bank/reset        |                6 |             32 |         5.33 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[15]    | data/Reg_bank/reset        |               12 |             32 |         2.67 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[1]     | data/Reg_bank/reset        |               16 |             32 |         2.00 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[26]    | data/Reg_bank/reset        |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[27]    | data/Reg_bank/reset        |                8 |             32 |         4.00 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[20]    | data/Reg_bank/reset        |               11 |             32 |         2.91 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[21]    | data/Reg_bank/reset        |               10 |             32 |         3.20 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[23]    | data/Reg_bank/reset        |               25 |             32 |         1.28 |
+|  clk_IBUF_BUFG | data/Reg_bank/bank_reg_n_0_[6]     | data/Reg_bank/reset        |               21 |             32 |         1.52 |
+|  clk_IBUF_BUFG |                                    | data/IF_ID_reg[95]_i_1_n_0 |               31 |            106 |         3.42 |
+|  clk_IBUF_BUFG |                                    | data/Reg_bank/reset        |              117 |            277 |         2.37 |
++----------------+------------------------------------+----------------------------+------------------+----------------+--------------+
+
+

@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Thu Mar 30 15:31:10 2023
+# Process ID: 17648
+# Current directory: C:/Users/lazar/Documents/risc-v/RISC-V.runs/synth_1
+# Command line: vivado.exe -log TOP_RISCV.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source TOP_RISCV.tcl
+# Log file: C:/Users/lazar/Documents/risc-v/RISC-V.runs/synth_1/TOP_RISCV.vds
+# Journal file: C:/Users/lazar/Documents/risc-v/RISC-V.runs/synth_1\vivado.jou
+# Running On: Lazar, OS: Windows, CPU Frequency: 2296 MHz, CPU Physical cores: 12, Host memory: 14877 MB
+#-----------------------------------------------------------
+source TOP_RISCV.tcl -notrace

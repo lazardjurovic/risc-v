@@ -15,9 +15,9 @@ entity ALU is
 	of_o   : out STD_LOGIC); -- signal da je doslo do prekoracenja opsega
 end ALU;
 architecture behav of ALU is
-	signal zeros : std_logic_vector(WIDTH - 1 downto 0) := (others => '0');
+	constant zeros : std_logic_vector(WIDTH - 1 downto 0) := (others => '0');
 begin
-	process (a_i, b_i, op_i) is
+	process (a_i, b_i, op_i, res_o) is
 	begin
 		case op_i is
 			when "00000" => res_o <= std_logic_vector(signed(a_i) + signed(b_i));
