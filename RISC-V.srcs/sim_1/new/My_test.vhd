@@ -70,6 +70,8 @@ begin
     wait for 200ns;
     instr_mem_read_i_s <= "00000000000100010000000110110011";
     wait for 200ns;
+    instr_mem_read_i_s <= "00000000000000000001001000110111";
+    wait for 200ns;
     instr_mem_read_i_s <= (others => '0');
     
 
