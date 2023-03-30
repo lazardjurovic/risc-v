@@ -58,6 +58,8 @@ architecture behav of data_path is
 
 	signal wb_forward_data, mem_forward_data   : std_logic_vector(31 downto 0);
 
+    signal shifted_immediate : std_logic_vector(31 downto 0);
+
 begin
 	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i)
 	begin
@@ -76,6 +78,8 @@ begin
 
 	instr_mem_address_o <= program_counter;
 	
+	shifted_immediate <= immediate(30 downto 0 ) & '0';
+	
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg)
 	begin
 		if (if_id_flush_i = '1' or reset = '0') then
@@ -83,7 +87,7 @@ begin
 		else
 			if (if_id_en_i = '1' and rising_edge(clk)) then
 			-- ISSUE: getting 'X' fix addition
-				IF_ID_reg <= program_counter & std_logic_vector(signed(immediate(30 downto 0) & '0')) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))
+				IF_ID_reg <= program_counter & std_logic_vector(signed(shifted_immediate) + signed(IF_ID_reg(95 downto 64))) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))
 			end if;
 		end if;
  

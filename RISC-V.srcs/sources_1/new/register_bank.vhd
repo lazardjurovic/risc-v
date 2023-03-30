@@ -33,6 +33,8 @@ begin
 	begin
 		if (reset = '0') then
 			bank <= (others => (others => '0'));
+			rs1_data_o <= (others => '0');
+            rs2_data_o <=  (others => '0');
 		else
 			if (rising_edge(clk)) then
                  bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;   
