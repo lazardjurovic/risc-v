@@ -35,15 +35,11 @@ begin
 			bank <= (others => (others => '0'));
 		else
 			if (rising_edge(clk)) then
-                    rs1_data_o <= bank(to_integer(unsigned(rs1_address_i)));
-                    rs2_data_o <= bank(to_integer(unsigned(rs2_address_i)));
+                 bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;   
 			end if;
 			
-			if(falling_edge(clk)) then
-			 	if (rd_we_i = '1') then
-					bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;
-				end if;
-			end if;
+			rs1_data_o <= bank(to_integer(unsigned(rs1_address_i)));
+            rs2_data_o <= bank(to_integer(unsigned(rs2_address_i)));
 			
 		end if;
 	end process;

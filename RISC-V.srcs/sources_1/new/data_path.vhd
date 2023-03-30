@@ -81,7 +81,7 @@ begin
 		if (if_id_flush_i = '1' or reset = '0') then
 			IF_ID_reg <= (others => '0');
 		else
-			if (if_id_en_i = '1' and falling_edge(clk)) then
+			if (if_id_en_i = '1' and rising_edge(clk)) then
 			-- ISSUE: getting 'X' fix addition
 				IF_ID_reg <= program_counter & std_logic_vector(signed(immediate(30 downto 0) & '0')) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))
 			end if;
@@ -113,7 +113,7 @@ begin
 		if (reset = '0') then
 			ID_EX_reg <= (others => '0');
 		else
-			if (falling_edge(clk)) then
+			if (rising_edge(clk)) then
  
 				ID_EX_reg <= rs1_data & rs2_data & immediate & IF_ID_reg(31 downto 0);
  
@@ -147,7 +147,7 @@ begin
 		if (reset = '0') then
 			EX_MEM_reg <= (others => '0');
 		else
-			if (falling_edge(clk)) then
+			if (rising_edge(clk)) then
  
 				EX_MEM_reg <= alu_out & ID_EX_reg(95 downto 64) & ID_EX_reg(31 downto 0); -- alu_out & rs2_data & instruction 
  
@@ -166,7 +166,7 @@ begin
 		if (reset = '0') then
 			MEM_WB_reg <= (others => '0');
 		else
-			if (falling_edge(clk)) then
+			if (rising_edge(clk)) then
  
 				MEM_WB_reg <= EX_MEM_reg(95 downto 64) & data_mem_read_i & EX_MEM_reg(31 downto 0);  -- alu out & mem data & instruction
  

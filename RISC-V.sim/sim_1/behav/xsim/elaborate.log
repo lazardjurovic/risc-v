@@ -3,9 +3,6 @@ Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
 Running: C:/Xilinx/Vivado/2022.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot My_test_behav xil_defaultlib.My_test -log elaborate.log 
 Using 2 slave threads.
 Starting static elaboration
-WARNING: [VRFC 10-8856] comparison between unequal length arrays always returns TRUE; left argument length 5 is different from right argument length 4 for 'std_logic_vector_93' array [C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/forwarding_unit.vhd:37]
-WARNING: [VRFC 10-8856] comparison between unequal length arrays always returns TRUE; left argument length 5 is different from right argument length 4 for 'std_logic_vector_93' array [C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/forwarding_unit.vhd:46]
-WARNING: [VRFC 10-8856] comparison between unequal length arrays always returns TRUE; left argument length 5 is different from right argument length 4 for 'std_logic_vector_93' array [C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/forwarding_unit.vhd:62]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis

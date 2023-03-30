@@ -69,7 +69,7 @@ begin
     begin
     
         if(reset = '1') then
-            if(falling_edge(clk)) then
+            if(rising_edge(clk)) then
                 
                 ID_EX_reg <= control_pass_s & mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
                              instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
@@ -92,7 +92,7 @@ begin
         
         if(reset = '1') then
             
-            if(falling_edge(clk)) then
+            if(rising_edge(clk)) then
                 
                 EX_MEM_reg <= ID_EX_reg(30) & ID_EX_reg(29) & ID_EX_reg(28) & ID_EX_reg(14 downto 10); -- mem_to_reg & data_mem_we & rd_ex & rd_address
                 
@@ -112,7 +112,7 @@ begin
     
         if(reset = '1') then
         
-            if(falling_edge(clk)) then
+            if(rising_edge(clk)) then
                 
                 MEM_WB_reg <= EX_MEM_reg(7) & EX_MEM_reg(5) & EX_MEM_reg(4 downto 0);
                 

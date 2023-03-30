@@ -32,24 +32,45 @@ architecture Behavioral of TOP_RISCV_tb is
 	
 
 
-function convert(vector_string: string) return std_logic_vector is
-    variable vector: std_logic_vector(31 downto 0) := (others => '0');
-    variable ascii_char : character;
+function to_std_logic(c: character) return std_logic is 
+    variable sl: std_logic;
+    begin
+      case c is
+        when 'U' => 
+           sl := 'U'; 
+        when 'X' =>
+           sl := 'X';
+        when '0' => 
+           sl := '0';
+        when '1' => 
+           sl := '1';
+        when 'Z' => 
+           sl := 'Z';
+        when 'W' => 
+           sl := 'W';
+        when 'L' => 
+           sl := 'L';
+        when 'H' => 
+           sl := 'H';
+        when '-' => 
+           sl := '-';
+        when others =>
+           sl := 'X'; 
+    end case;
+   return sl;
+  end to_std_logic;
+
+function to_std_logic_vector(s: string) return std_logic_vector is 
+  variable slv: std_logic_vector(s'high-s'low downto 0);
+  variable k: integer;
 begin
-
-
-    for i in 1 to 32 loop
-        ascii_char := character(vector_string(i));
-        if(ascii_char = '1') then
-            vector(32-i) := '1';
-        else
-            vector(32-1) := '0';
-        end if;
-    end loop;    
-    
-    
-return vector;
-end function;
+   k := s'high-s'low;
+  for i in s'range loop
+     slv(k) := to_std_logic(s(i));
+     k      := k - 1;
+  end loop;
+  return slv;
+end to_std_logic_vector;     
 	
 begin
 	-- Memorija za instrukcije
@@ -137,7 +158,7 @@ TOP_RISCV_1 : entity work.TOP_RISCV
 								readline(RISCV_instructions, row);
 								addra_instr_s <= std_logic_vector(to_unsigned(i, 10));
 								
-								dina_instr_s  <= convert(string(row));
+								dina_instr_s  <= to_std_logic_vector(string(row));
 								i := i + 4;
 								wait until rising_edge(clk);
 							end loop;
