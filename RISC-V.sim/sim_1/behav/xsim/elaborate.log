@@ -20,6 +20,7 @@ Compiling architecture behav of entity xil_defaultlib.ctrl_decoder [ctrl_decoder
 Compiling architecture behav of entity xil_defaultlib.forwarding_unit [forwarding_unit_default]
 Compiling architecture behav of entity xil_defaultlib.alu_decoder [alu_decoder_default]
 Compiling architecture behav of entity xil_defaultlib.hazard_unit [hazard_unit_default]
+Compiling architecture behavioral of entity xil_defaultlib.branching_unit [branching_unit_default]
 Compiling architecture behav of entity xil_defaultlib.control_path [control_path_default]
 Compiling architecture structural of entity xil_defaultlib.TOP_RISCV [top_riscv_default]
 Compiling architecture behavioral of entity xil_defaultlib.my_test

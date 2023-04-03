@@ -9,8 +9,8 @@ entity control_path is
 		reset : in std_logic;
 		-- instrukcija dolazi iz datapah-a
 		instruction_i : in std_logic_vector (31 downto 0);
-		-- Statusni signaln iz datapath celine
-		branch_condition_i : in std_logic;
+		rs1_data_i : in std_logic_vector(31 downto 0);
+		rs2_data_i : in std_logic_vector(31 downto 0);		
 		-- kontrolni signali koji se prosledjiuju u datapath
 		mem_to_reg_o  : out std_logic;
 		alu_op_o      : out std_logic_vector(4 downto 0);
@@ -63,11 +63,16 @@ signal rd_we_wb_s : std_logic := '0';
 signal rd_address_mem_s : std_logic_vector(4 downto 0) := (others =>'0');
 signal rd_we_mem_s : std_logic := '0';
 
+-- branching unit signals
+--outputs
+signal pc_next_sel_s : std_logic;
+
+
 begin
 
     -- TODO: solve control_pass signal as control of ID_EX_reg
     
-    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_condition_i, branch_id_s)
+    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s)
     begin
     
         if(reset = '1') then
@@ -83,8 +88,8 @@ begin
         end if;
         
             alu_src_b_o <= ID_EX_reg (27);
-            pc_next_sel_o <= branch_condition_i and branch_id_s;
-            if_id_flush_o <= branch_condition_i and branch_id_s;
+            pc_next_sel_o <= pc_next_sel_s;
+            if_id_flush_o <= pc_next_sel_s;
            
    
     end process;
@@ -207,6 +212,15 @@ port map(
     -- control_pass_o kontrolise da li ce u execute fazu biti prosledjeni
     -- kontrolni signali iz ctrl_decoder-a ili sve nule
     control_pass_o => control_pass_s
+);
+
+branch: entity work.branching_unit
+port map(
+    rs1_data_i => rs1_data_i,
+    rs2_data_i => rs2_data_i,
+    funct3_i => instruction_i(14 downto 12),       
+    branch_instr_i => branch_id_s,
+    pc_next_sel_o => pc_next_sel_s
 );
 
 end behav;

@@ -21,7 +21,6 @@ entity data_path is
 		alu_src_b_i        : in std_logic;
 		pc_next_sel_i      : in std_logic;
 		rd_we_i            : in std_logic;
-		branch_condition_o : out std_logic;
 		-- kontrolni signali za prosledjivanje operanada u ranije faze protocneobrade
 		alu_forward_a_i    : in std_logic_vector (1 downto 0);
 		alu_forward_b_i    : in std_logic_vector (1 downto 0);
@@ -31,7 +30,10 @@ entity data_path is
 		if_id_flush_i : in std_logic;
 		-- kontrolni signali za zaustavljanje protocne obrade
 		pc_en_i    : in std_logic;
-		if_id_en_i : in std_logic
+		if_id_en_i : in std_logic;
+		-- signali ka jedinici za skokove
+		rs1_data_o : out std_logic_vector(31 downto 0);
+		rs2_data_o : out std_logic_vector(31 downto 0)
 	);
 end entity;
 
@@ -59,6 +61,7 @@ architecture behav of data_path is
 	signal wb_forward_data, mem_forward_data   : std_logic_vector(31 downto 0);
 
     signal shifted_immediate : std_logic_vector(31 downto 0);
+   
 
 begin
 	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i)
@@ -104,8 +107,10 @@ begin
 		else
 			branch_comp_b <= rs2_data;
 		end if;
- 
-		branch_condition_o <= '1' when branch_comp_a = branch_comp_b else '0';
+        
+        rs1_data_o <= rs1_data;
+        rs2_data_o <= rs2_data;
+        
         rs1_address <= IF_ID_reg(19 downto 15);
         rs2_address <= IF_ID_reg(24 downto 20);
  

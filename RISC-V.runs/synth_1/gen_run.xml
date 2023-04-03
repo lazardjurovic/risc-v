@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="synth_1" LaunchPart="xc7k70tfbv676-1" LaunchTime="1680183067">
   <File Type="PA-TCL" Name="TOP_RISCV.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="TOP_RISCV_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="TOP_RISCV_reports.tcl"/>
   <File Type="RDS-RDS" Name="TOP_RISCV.vds"/>
   <File Type="RDS-UTIL" Name="TOP_RISCV_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="TOP_RISCV_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="TOP_RISCV.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="TOP_RISCV_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="TOP_RISCV_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/register_bank.vhd">

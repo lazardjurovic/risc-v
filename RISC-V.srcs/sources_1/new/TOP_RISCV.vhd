@@ -25,7 +25,6 @@ signal alu_op_s : std_logic_vector(4 downto 0);
 signal alu_src_b_s : std_logic;
 signal pc_next_sel_s : std_logic;
 signal rd_we_s : std_logic;
-signal branch_condition_s : std_logic;
 signal alu_forward_a_s : std_logic_vector(1 downto 0);
 signal alu_forward_b_s : std_logic_vector(1 downto 0);
 signal branch_forward_a_s : std_logic;     
@@ -33,6 +32,7 @@ signal branch_forward_b_s : std_logic;
 signal if_id_flush_s : std_logic;   
 signal pc_en_s : std_logic;     
 signal if_id_en_s : std_logic;
+signal rs1_data_s, rs2_data_s : std_logic_vector(31 downto 0);
                
 begin
 
@@ -56,7 +56,6 @@ port map(
 		alu_src_b_i        => alu_src_b_s,
 		pc_next_sel_i      => pc_next_sel_s,
 		rd_we_i            => rd_we_s,
-		branch_condition_o => branch_condition_s,
 		-- kontrolni signali za prosledjivanje operanada u ranije faze protocneobrade
 		alu_forward_a_i    => alu_forward_a_s,
 		alu_forward_b_i    => alu_forward_b_s,
@@ -66,7 +65,9 @@ port map(
 		if_id_flush_i => if_id_flush_s,
 		-- kontrolni signali za zaustavljanje protocne obrade
 		pc_en_i    => pc_en_s,
-		if_id_en_i => if_id_en_s
+		if_id_en_i => if_id_en_s,
+		rs1_data_o => rs1_data_s,
+		rs2_data_o => rs2_data_s
 );
 
 control: entity work.control_path
@@ -76,8 +77,8 @@ port map(
 		reset => reset,
 		-- instrukcija dolazi iz datapah-a
 		instruction_i => instructon_s,
-		-- Statusni signaln iz datapath celine
-		branch_condition_i => branch_condition_s,
+		rs1_data_i => rs1_data_s,
+		rs2_data_i => rs2_data_s,
 		-- kontrolni signali koji se prosledjiuju u datapath
 		mem_to_reg_o  =>  mem_to_reg_s,
 		alu_op_o      => alu_op_s,
