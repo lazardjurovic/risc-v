@@ -34,13 +34,13 @@ end entity;
 architecture behav of control_path is
 
 signal ID_EX_reg : std_logic_vector(31 downto 0); 
-signal EX_MEM_reg : std_logic_vector(7 downto 0);
+signal EX_MEM_reg : std_logic_vector(8 downto 0);
 signal MEM_WB_reg : std_logic_vector(6 downto 0);
 
 -- control decoder signals
 -- innputs
 signal mem_to_reg_id_s : std_logic := '0';
-signal data_mem_we_id_s : std_logic := '0';
+signal data_mem_we_id_s : std_logic_vector(1 downto 0) := "00";
 signal rd_we_id_s : std_logic := '0';
 signal alu_src_b_id_s : std_logic := '0';
 signal branch_id_s : std_logic := '0' ;
@@ -65,13 +65,15 @@ signal rd_we_mem_s : std_logic := '0';
 
 begin
 
+    -- TODO: solve control_pass signal as control of ID_EX_reg
+    
     ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_condition_i, branch_id_s)
     begin
     
         if(reset = '1') then
             if(rising_edge(clk)) then
                 
-                ID_EX_reg <= control_pass_s & mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
+                ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
                              instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
                              
                  
@@ -94,14 +96,20 @@ begin
             
             if(rising_edge(clk)) then
                 
-                EX_MEM_reg <= ID_EX_reg(30) & ID_EX_reg(29) & ID_EX_reg(28) & ID_EX_reg(14 downto 10); -- mem_to_reg & data_mem_we & rd_ex & rd_address
+                EX_MEM_reg <= ID_EX_reg(31) & ID_EX_reg(30 downto 29) & ID_EX_reg(28) & ID_EX_reg(14 downto 10); -- mem_to_reg & data_mem_we_id & rd_ex & rd_address
                 
             end if; 
         else
             EX_MEM_reg <= (others => '0');    
         end if;
         
-            data_mem_we_o <= "1111" when EX_MEM_reg(6) = '1' else "0000"; -- data_mem mux for we
+            case EX_MEM_reg(7 downto 6) is
+                when "00" => data_mem_we_o <= (others => '0');
+                when "01" => data_mem_we_o <= "0001"; -- SB
+                when "10" => data_mem_we_o <= "0011"; -- SH
+                when "11" => data_mem_we_o <= "1111"; -- SW
+                when others => data_mem_we_o <= (others => '0');
+            end case;
             rd_we_mem_s <= EX_MEM_reg(5);
             rd_address_mem_s <= EX_MEM_reg(4 downto 0);
     
@@ -134,6 +142,7 @@ begin
 ctrl_dec: entity work.ctrl_decoder
 port map(
     opcode_i => instruction_i(6 downto 0),
+    funct3_id_i => instruction_i(14 downto 12),
     branch_o   => branch_id_s,
     mem_to_reg_o  => mem_to_reg_id_s,
     data_mem_we_o => data_mem_we_id_s,
