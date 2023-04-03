@@ -36,7 +36,7 @@ begin
 			rs1_data_o <= (others => '0');
             rs2_data_o <=  (others => '0');
 		else
-			if (rising_edge(clk)) then
+			if (rising_edge(clk) and rd_we_i = '1' ) then
                  bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;   
 			end if;
 			

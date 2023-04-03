@@ -22,7 +22,7 @@ end entity;
 architecture behav of ctrl_decoder is
 begin
 
-    process(opcode_i) is
+    process(opcode_i,funct3_id_i) is
     begin
     
         case opcode_i is 

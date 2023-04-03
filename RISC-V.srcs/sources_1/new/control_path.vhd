@@ -65,8 +65,7 @@ signal rd_we_mem_s : std_logic := '0';
 
 -- branching unit signals
 --outputs
-signal pc_next_sel_s : std_logic;
-
+signal pc_next_sel_s : std_logic := '0';
 
 begin
 
@@ -87,12 +86,11 @@ begin
             ID_EX_reg <= (others => '0');
         end if;
         
-            alu_src_b_o <= ID_EX_reg (27);
-            pc_next_sel_o <= pc_next_sel_s;
-            if_id_flush_o <= pc_next_sel_s;
-           
-   
+            alu_src_b_o <= ID_EX_reg (27);   
     end process;
+    
+    pc_next_sel_o <= pc_next_sel_s;
+    if_id_flush_o <= pc_next_sel_s;
     
     EX_MEM: process(clk,reset, ID_EX_reg, EX_MEM_reg)
     begin
