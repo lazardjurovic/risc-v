@@ -71,12 +71,17 @@ begin
             if(reset = '1') then
             
 			if (pc_en_i = '1') then
+			
+			    instr_mem_address_o <= program_counter;
+			
                 case pc_next_sel_i is
                     when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
                     when '1' => program_counter <= IF_ID_reg(63 downto 32);
                     when others => program_counter <= (others => '0');
                 
                     end case;
+                   
+                    
                 end if;
             else
                 program_counter <= (others => '0');	
@@ -85,46 +90,38 @@ begin
 
 	end process;
 
-	instr_mem_address_o <= program_counter;
+	
 	
 	shifted_immediate <= immediate(30 downto 0 ) & '0';
 	
-	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg)
+	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg,immediate)
 	begin
-	
---		if (if_id_flush_i = '1' or reset = '0') then
---			IF_ID_reg <= (others => '0');
---		else
---			if (if_id_en_i = '1' and rising_edge(clk)) then
---			-- ISSUE: getting 'X' fix addition
---				IF_ID_reg <= program_counter & std_logic_vector(signed(shifted_immediate) + signed(IF_ID_reg(95 downto 64))) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))
---			end if;
---		end if;
-		
 		
 		if(rising_edge(clk)) then
 		
-		  if(reset = '0') then
-		      IF_ID_reg <= (others => '0');
-		  elsif(if_id_flush_i = '1') then
-		      IF_ID_reg <= (others => '0');
-		  elsif(if_id_en_i = '1') then    
-		       IF_ID_reg <= program_counter & std_logic_vector(signed(shifted_immediate) + signed(IF_ID_reg(95 downto 64))) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))  
-		  end if;
+              if(reset = '0') then
+                  IF_ID_reg <= (others => '0');
+              elsif(if_id_flush_i = '1') then
+                  IF_ID_reg <= (others => '0');
+              elsif(if_id_en_i = '1') then    
+                   IF_ID_reg <= program_counter & std_logic_vector(unsigned(shifted_immediate) + unsigned(IF_ID_reg(95 downto 64))) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))  
+              end if;
 		
 		end if;
  
-		if (branch_forward_a_i = '1') then
-			branch_comp_a <= wb_forward_data;
-		else
-			branch_comp_a <= rs1_data;
-		end if;
+ -- TODO: solve branch_forwarding with branch unit
  
-		if (branch_forward_b_i = '1') then
-			branch_comp_b <= wb_forward_data;
-		else
-			branch_comp_b <= rs2_data;
-		end if;
+--		if (branch_forward_a_i = '1') then
+--			branch_comp_a <= wb_forward_data;
+--		else
+--			branch_comp_a <= rs1_data;
+--		end if;
+ 
+--		if (branch_forward_b_i = '1') then
+--			branch_comp_b <= wb_forward_data;
+--		else
+--			branch_comp_b <= rs2_data;
+--		end if;
         
         rs1_data_o <= rs1_data;
         rs2_data_o <= rs2_data;
@@ -185,7 +182,7 @@ begin
  
 		mem_forward_data   <= EX_MEM_reg(95 downto 64); -- alu out
 		data_mem_address_o <= EX_MEM_reg(95 downto 64); -- -||-
-		data_mem_write_o   <= ID_EX_reg(63 downto 32);  -- rs2 out
+		data_mem_write_o   <= EX_MEM_reg(63 downto 32);  -- rs2 out
  
 
 	end process;

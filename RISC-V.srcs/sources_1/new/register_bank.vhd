@@ -31,18 +31,26 @@ architecture behav of register_bank is
 begin
 	process (clk, reset, rs1_address_i, rs2_address_i, rd_address_i, rd_we_i,rd_data_i, bank)
 	begin
-		if (reset = '0') then
-			bank <= (others => (others => '0'));
-			rs1_data_o <= (others => '0');
-            rs2_data_o <=  (others => '0');
-		else
-			if (rising_edge(clk) and rd_we_i = '1' ) then
-                 bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;   
-			end if;
+	
+        rs1_data_o <= bank(to_integer(unsigned(rs1_address_i)));
+        rs2_data_o <= bank(to_integer(unsigned(rs2_address_i)));
+        
+	   if(rising_edge(clk)) then
+	       
+	       if(reset = '0') then
+                bank <= (others => (others => '0'));
+                rs1_data_o <= (others => '0');
+                rs2_data_o <=  (others => '0');
+	       else
+	           
+	           if(rd_we_i = '1') then
+	               bank(to_integer(unsigned(rd_address_i))) <= rd_data_i;   
+	           end if;
+	           
+	       end if;
+	       
+	   end if;    
 			
-			rs1_data_o <= bank(to_integer(unsigned(rs1_address_i)));
-            rs2_data_o <= bank(to_integer(unsigned(rs2_address_i)));
-			
-		end if;
 	end process;
+	
 end behav;
