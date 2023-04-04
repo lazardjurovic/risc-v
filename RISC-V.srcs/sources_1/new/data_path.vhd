@@ -31,9 +31,8 @@ entity data_path is
 		-- kontrolni signali za zaustavljanje protocne obrade
 		pc_en_i    : in std_logic;
 		if_id_en_i : in std_logic;
-		-- signali ka jedinici za skokove
-		rs1_data_o : out std_logic_vector(31 downto 0);
-		rs2_data_o : out std_logic_vector(31 downto 0)
+		-- kontrolni izlazi za grananje
+		branch_condition_o : out std_logic
 	);
 end entity;
 
@@ -90,8 +89,6 @@ begin
 
 	end process;
 
-	
-	
 	shifted_immediate <= immediate(30 downto 0 ) & '0';
 	
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg,immediate)
@@ -104,28 +101,11 @@ begin
               elsif(if_id_flush_i = '1') then
                   IF_ID_reg <= (others => '0');
               elsif(if_id_en_i = '1') then    
-                   IF_ID_reg <= program_counter & std_logic_vector(unsigned(shifted_immediate) + unsigned(IF_ID_reg(95 downto 64))) & instr_mem_read_i; --  signed(IF_ID_reg(63 downto 32))  
+                   IF_ID_reg <= program_counter & std_logic_vector(unsigned(shifted_immediate) + unsigned(IF_ID_reg(95 downto 64))) & instr_mem_read_i;  
               end if;
 		
 		end if;
- 
- -- TODO: solve branch_forwarding with branch unit
- 
---		if (branch_forward_a_i = '1') then
---			branch_comp_a <= wb_forward_data;
---		else
---			branch_comp_a <= rs1_data;
---		end if;
- 
---		if (branch_forward_b_i = '1') then
---			branch_comp_b <= wb_forward_data;
---		else
---			branch_comp_b <= rs2_data;
---		end if;
-        
-        rs1_data_o <= rs1_data;
-        rs2_data_o <= rs2_data;
-        
+       
         rs1_address <= IF_ID_reg(19 downto 15);
         rs2_address <= IF_ID_reg(24 downto 20);
  
@@ -226,8 +206,6 @@ port map(
     immediate_extended_o => immediate
 );
 
-            --TODO: figure out where do i connect overflow and zero flags
-
 ALU_entity : entity work.ALU
 port map(
     a_i    => alu_a, 
@@ -236,6 +214,17 @@ port map(
     res_o  => alu_out, 
     zero_o => open, 
     of_o   => open
+);
+
+branch: entity work.branching_unit
+port map(
+rs1_data_i => rs1_data,
+rs2_data_i => rs2_data,
+mem_data_i => EX_MEM_reg(95 downto 64), -- alu_result   
+funct3_i => IF_ID_reg(14 downto 12),     
+branch_forward_a_i => branch_forward_a_i,
+branch_forward_b_i => branch_forward_b_i,
+branch_condition_o  => branch_condition_o
 );
 
 end behav;

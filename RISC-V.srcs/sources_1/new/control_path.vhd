@@ -9,8 +9,7 @@ entity control_path is
 		reset : in std_logic;
 		-- instrukcija dolazi iz datapah-a
 		instruction_i : in std_logic_vector (31 downto 0);
-		rs1_data_i : in std_logic_vector(31 downto 0);
-		rs2_data_i : in std_logic_vector(31 downto 0);		
+		branch_condition_i : in std_logic;
 		-- kontrolni signali koji se prosledjiuju u datapath
 		mem_to_reg_o  : out std_logic;
 		alu_op_o      : out std_logic_vector(4 downto 0);
@@ -87,6 +86,9 @@ begin
         end if;
         
             alu_src_b_o <= ID_EX_reg (27);   
+            
+            pc_next_sel_s <= branch_condition_i and branch_id_s;
+            
     end process;
     
     pc_next_sel_o <= pc_next_sel_s;
@@ -212,13 +214,5 @@ port map(
     control_pass_o => control_pass_s
 );
 
-branch: entity work.branching_unit
-port map(
-    rs1_data_i => rs1_data_i,
-    rs2_data_i => rs2_data_i,
-    funct3_i => instruction_i(14 downto 12),       
-    branch_instr_i => branch_id_s,
-    pc_next_sel_o => pc_next_sel_s
-);
 
 end behav;
