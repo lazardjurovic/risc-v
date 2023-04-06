@@ -58,8 +58,8 @@ architecture behav of data_path is
 	signal alu_a, alu_b, alu_b_intern, alu_out : std_logic_vector(31 downto 0); -- signals for connecting ALU sorces
 
 	signal wb_forward_data, mem_forward_data   : std_logic_vector(31 downto 0);
-
     signal shifted_immediate : std_logic_vector(31 downto 0);
+    signal mem_wb_rd_data_s : std_logic_vector(31 downto 0);
    
 
 begin
@@ -182,10 +182,10 @@ begin
     
 	end process;
 	
-    rd_data         <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i; -- alu out or mem data
-    wb_forward_data <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i;
-    rd_address      <= MEM_WB_reg(11 downto 7); -- rd field in instruction 
-	
+ wb_mux:    mem_wb_rd_data_s <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i; -- alu out or mem data
+            wb_forward_data <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i;
+            rd_address      <= MEM_WB_reg(11 downto 7); -- rd field in instruction 
+            
 -- Building blocks from other files
 
 Reg_bank : entity work.register_bank
@@ -219,13 +219,22 @@ port map(
 
 branch: entity work.branching_unit
 port map(
-rs1_data_i => rs1_data,
-rs2_data_i => rs2_data,
-mem_data_i => EX_MEM_reg(95 downto 64), -- alu_result   
-funct3_i => IF_ID_reg(14 downto 12),     
-branch_forward_a_i => branch_forward_a_i,
-branch_forward_b_i => branch_forward_b_i,
-branch_condition_o  => branch_condition_o
+    rs1_data_i => rs1_data,
+    rs2_data_i => rs2_data,
+    mem_data_i => EX_MEM_reg(95 downto 64), -- alu_result   
+    funct3_i => IF_ID_reg(14 downto 12),     
+    branch_forward_a_i => branch_forward_a_i,
+    branch_forward_b_i => branch_forward_b_i,
+    branch_condition_o  => branch_condition_o
+);
+
+load: entity work.load_unit
+port map(
+    wb_data_i => mem_wb_rd_data_s,
+    wb_opcode_i => MEM_WB_reg(6 downto 0),
+    wb_funct3_i => MEM_WB_reg(14 downto 12),
+    rd_we_i => rd_we_i,
+    reg_bank_data_o => rd_data
 );
 
 end behav;

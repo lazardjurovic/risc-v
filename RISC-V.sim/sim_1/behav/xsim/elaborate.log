@@ -18,6 +18,7 @@ Compiling architecture behav of entity xil_defaultlib.register_bank [register_ba
 Compiling architecture behav of entity xil_defaultlib.immediate [immediate_default]
 Compiling architecture behav of entity xil_defaultlib.ALU [alu_default]
 Compiling architecture behavioral of entity xil_defaultlib.branching_unit [branching_unit_default]
+Compiling architecture behavioral of entity xil_defaultlib.load_unit [\load_unit(6,0)\]
 Compiling architecture behav of entity xil_defaultlib.data_path [data_path_default]
 Compiling architecture behav of entity xil_defaultlib.ctrl_decoder [ctrl_decoder_default]
 Compiling architecture behav of entity xil_defaultlib.forwarding_unit [forwarding_unit_default]

@@ -1,5 +1,5 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/control_path.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'control_path'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/data_path.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'data_path'
 INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sources_1/new/TOP_RISCV.vhd" into library xil_defaultlib
 INFO: [VRFC 10-3107] analyzing entity 'TOP_RISCV'
 INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/lazar/Documents/risc-v/RISC-V.srcs/sim_1/new/TOP_RISCV_tb.vhd" into library xil_defaultlib
