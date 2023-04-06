@@ -127,7 +127,7 @@ begin
         
             if(rising_edge(clk)) then
                 
-                MEM_WB_reg <= EX_MEM_reg(7) & EX_MEM_reg(5) & EX_MEM_reg(4 downto 0);
+                MEM_WB_reg <= EX_MEM_reg(8) & EX_MEM_reg(5) & EX_MEM_reg(4 downto 0);
                 
             end if; 
         else
