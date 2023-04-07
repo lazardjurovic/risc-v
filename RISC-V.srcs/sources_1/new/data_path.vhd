@@ -63,7 +63,7 @@ architecture behav of data_path is
    
 
 begin
-	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i)
+	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i,immediate)
 	begin
 		if (rising_edge(clk)) then
             
@@ -73,7 +73,7 @@ begin
 			
                 case pc_next_sel_i is
                     when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
-                    when '1' => program_counter <= IF_ID_reg(63 downto 32);
+                    when '1' => program_counter <= std_logic_vector(unsigned(program_counter) + unsigned(immediate) - 4);
                     when others => program_counter <= (others => '0');
            
                     end case;
@@ -89,8 +89,17 @@ begin
     --TODO: figure out if pc_en_i plays role in driging instr_mem_address_o
     
     instr_mem_address_o <= program_counter;
+    shifted_immediate <= immediate(30 downto 0 ) & '0';
 
-	shifted_immediate <= immediate(30 downto 0 ) & '0';
+
+--    process(clk, shifted_immediate,  pc_en_i)
+--    begin
+--       if(rising_edge(clk)) then
+--           if(pc_en_i = '1') then
+--	           shifted_immediate <= immediate(30 downto 0 ) & '0';
+--	       end if;
+--	   end if;
+--	end process;
 	
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg,immediate)
 	begin
