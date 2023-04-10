@@ -9,6 +9,7 @@ entity branching_unit is
 		rs2_data_i     : in std_logic_vector(31 downto 0);
 		mem_data_i     : in std_logic_vector(31 downto 0);
 		funct3_i       : in std_logic_vector(2 downto 0);
+		opcode_i : in std_logic_vector(6 downto 0);
 		branch_forward_a_i : in std_logic;
 		branch_forward_b_i : in std_logic;
 		
@@ -23,25 +24,14 @@ signal operand1, operand2 : std_logic_vector(31 downto 0);
 
 begin
 
-    operand_proc: process(rs1_data_i,rs2_data_i,branch_forward_a_i,branch_forward_b_i)
-    begin
-        
-        if(branch_forward_a_i = '1') then
-            operand1 <= mem_data_i;
-        else
-            operand1 <= rs1_data_i;
-        end if;
-        
-        if(branch_forward_a_i = '1') then
-            operand2 <= mem_data_i;
-        else
-            operand2 <= rs2_data_i;
-        end if;
+    operand1 <= mem_data_i when branch_forward_a_i = '1' else rs1_data_i;
+    operand2 <= mem_data_i when branch_forward_b_i = '1' else rs2_data_i;
     
-    end process;
 
-	process (operand1, operand2, funct3_i)
+	process (operand1, operand2, funct3_i,opcode_i)
 	begin
+	
+	   if(opcode_i = "1100011") then   
 			case funct3_i is
 
 				when "000" => -- BEQ
@@ -51,10 +41,10 @@ begin
 						branch_condition_o <= '0';
 					end if;
 				when "001" => -- BNE
-					if (operand1 /= operand2) then
-						branch_condition_o <= '1';
-					else
+					if (operand1 = operand2) then
 						branch_condition_o <= '0';
+					else
+						branch_condition_o <= '1';
 					end if;
 				when "100" => -- BLT
 					if (signed(operand1) < signed(operand2)) then
@@ -82,7 +72,9 @@ begin
 					end if;
 				when others => branch_condition_o <= '0';
 			end case;
-			
+	   else    
+	       branch_condition_o <= '0';
+	   end if;
 	end process;
 
 end Behavioral;

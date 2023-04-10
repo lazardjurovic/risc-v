@@ -40,7 +40,7 @@ architecture behav of data_path is
 
 	signal program_counter                     : std_logic_vector(31 downto 0) := (others => '0');
 
-	signal IF_ID_reg                           : std_logic_vector(95 downto 0);
+	signal IF_ID_reg                           : std_logic_vector(31 downto 0);
 	signal ID_EX_reg                           : std_logic_vector(127 downto 0);
 	signal EX_MEM_reg                          : std_logic_vector(95 downto 0);
 	signal MEM_WB_reg                          : std_logic_vector(95 downto 0);
@@ -60,36 +60,28 @@ architecture behav of data_path is
 	signal wb_forward_data, mem_forward_data   : std_logic_vector(31 downto 0);
     signal shifted_immediate : std_logic_vector(31 downto 0);
     signal mem_wb_rd_data_s : std_logic_vector(31 downto 0);
-   
-
+    
 begin
+
 	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i,shifted_immediate, program_counter)
 	begin
 		if (rising_edge(clk)) then
-            
+                  
             if(reset = '1') then
                 case pc_next_sel_i is
                     when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
-                    when '1' => program_counter <= std_logic_vector(signed(program_counter) + signed(shifted_immediate));
+                    when '1' => program_counter <= std_logic_vector(signed(program_counter) + signed(shifted_immediate) +4);
                     when others => program_counter <= (others => '0');
-                    end case;
-                                     
+                    end case;                                                         
             else
                 program_counter <= (others => '0');	
             end if;
 		end if; 
 
 	end process;
-    
-    process(clk, pc_en_i) 
-    begin
-        if(rising_edge(clk)) then
-            if(pc_en_i = '1') then
-                instr_mem_address_o <= program_counter;
-            end if;
-        end if;
-    end process;
-    
+	
+	
+    instr_mem_address_o <= program_counter when pc_en_i = '1' and rising_edge(clk);
     shifted_immediate <= immediate(30 downto 0 ) & '0';
 	
 	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg,immediate)
@@ -102,30 +94,29 @@ begin
               elsif(if_id_flush_i = '1') then
                   IF_ID_reg <= (others => '0');
               elsif(if_id_en_i = '1') then    
-                   IF_ID_reg <= program_counter & std_logic_vector(unsigned(shifted_immediate) + unsigned(IF_ID_reg(95 downto 64))) & instr_mem_read_i;  
+                   IF_ID_reg <= instr_mem_read_i;  
               end if;
 		
 		end if;
-       
-            rs1_address <= IF_ID_reg(19 downto 15);
-            rs2_address <= IF_ID_reg(24 downto 20);
- 
+        
+                rs1_address <= IF_ID_reg(19 downto 15);
+                rs2_address <= IF_ID_reg(24 downto 20);
 	end process;
 	
     instruction_o <= IF_ID_reg(31 downto 0);
 
-
 	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg,alu_forward_a_i,alu_forward_b_i,wb_forward_data,mem_forward_data, ID_EX_reg, alu_src_b_i, alu_b_intern)
 	begin
-		if (reset = '0') then
-			ID_EX_reg <= (others => '0');
-		else
+
 			if (rising_edge(clk)) then
- 
-				ID_EX_reg <= rs1_data & rs2_data & immediate & IF_ID_reg(31 downto 0);
+			    if(reset = '1') then
+				    ID_EX_reg <= rs1_data & rs2_data & immediate & IF_ID_reg(31 downto 0);
+				else
+				    ID_EX_reg <= (others => '0');
+				end if;
  
 			end if;
-		end if;
+    
 
 		case alu_forward_a_i is
  
@@ -144,6 +135,7 @@ begin
 			when others => alu_b_intern    <= (others => '0');
  
 		end case;
+		
 
 		alu_b <= alu_b_intern when alu_src_b_i = '0' else ID_EX_reg(63 downto 32); -- immediate
 
@@ -151,16 +143,14 @@ begin
 
 	EX_MEM : process (reset, clk, alu_out, ID_EX_reg, EX_MEM_reg)
 	begin
-		if (reset = '0') then
-			EX_MEM_reg <= (others => '0');
-		else
 			if (rising_edge(clk)) then
- 
-				EX_MEM_reg <= alu_out & ID_EX_reg(95 downto 64) & ID_EX_reg(31 downto 0); -- alu_out & rs2_data & instruction 
- 
+                if(reset = '1') then
+				    EX_MEM_reg <= alu_out & ID_EX_reg(95 downto 64) & ID_EX_reg(31 downto 0); -- alu_out & rs2_data & instruction 
+                else
+                    EX_MEM_reg <= (others => '0');
+                end if;    
 			end if;
-		end if;
- 
+
 		mem_forward_data   <= EX_MEM_reg(95 downto 64); -- alu out
 		data_mem_address_o <= EX_MEM_reg(95 downto 64); -- -||-
 		data_mem_write_o   <= EX_MEM_reg(63 downto 32);  -- rs2 out
@@ -170,16 +160,13 @@ begin
 
 	MEM_WB : process (reset, clk, EX_MEM_reg)
 	begin
-		if (reset = '0') then
-			MEM_WB_reg <= (others => '0');
-		else
 			if (rising_edge(clk)) then
- 
-				MEM_WB_reg <= EX_MEM_reg(95 downto 64) & data_mem_read_i & EX_MEM_reg(31 downto 0);  -- alu out & mem data & instruction
- 
-			end if;
-		end if;
-    
+                if(reset = '1') then
+				    MEM_WB_reg <= EX_MEM_reg(95 downto 64) & data_mem_read_i & EX_MEM_reg(31 downto 0);  -- alu out & mem data & instruction
+                else
+                    MEM_WB_reg <= (others => '0');
+                end if;
+			end if;    
 	end process;
 	
  wb_mux:    mem_wb_rd_data_s <= MEM_WB_reg(95 downto 64) when mem_to_reg_i = '0' else data_mem_read_i; -- alu out or mem data
@@ -225,7 +212,8 @@ port map(
     funct3_i => IF_ID_reg(14 downto 12),     
     branch_forward_a_i => branch_forward_a_i,
     branch_forward_b_i => branch_forward_b_i,
-    branch_condition_o  => branch_condition_o
+    branch_condition_o  => branch_condition_o,
+    opcode_i => IF_ID_reg(6 downto 0)
 );
 
 load: entity work.load_unit

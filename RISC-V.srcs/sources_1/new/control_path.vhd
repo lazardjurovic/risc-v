@@ -64,15 +64,12 @@ signal rd_address_mem_s : std_logic_vector(4 downto 0) := (others =>'0');
 signal rd_we_mem_s : std_logic := '0';
 
 
--- branching unit signals
---outputs
-signal pc_next_sel_s : std_logic := '0';
-
 begin
 
-    control_pass_s <= '0' when control_pass_tmp = '0' or pc_next_sel_s = '1' else '1';
+    --control_pass_s <= '0' when control_pass_tmp = '0' or pc_next_sel_s = '1' else '1';
+    control_pass_s <= control_pass_tmp;
     
-    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s, control_pass_s,mem_to_reg_id_s,rd_we_id_s,alu_src_b_id_s,alu_2bit_op_id_s)
+    ID_EX : process(clk, reset, instruction_i, ID_EX_reg, control_pass_s,mem_to_reg_id_s,rd_we_id_s,alu_src_b_id_s,alu_2bit_op_id_s)
     begin
     
         if(reset = '1') then
@@ -88,14 +85,14 @@ begin
         else
             ID_EX_reg <= (others => '0');
         end if;
-        
+         
             alu_src_b_o <= ID_EX_reg (27);   
+
 
     end process;
     
-    pc_next_sel_s <= branch_condition_i and branch_id_s;
-    pc_next_sel_o <= pc_next_sel_s;
-    if_id_flush_o <= pc_next_sel_s;
+    pc_next_sel_o <=  branch_condition_i and branch_id_s;
+    if_id_flush_o <=  branch_condition_i and branch_id_s;
     
     EX_MEM: process(clk,reset, ID_EX_reg, EX_MEM_reg)
     begin
@@ -111,6 +108,7 @@ begin
             EX_MEM_reg <= (others => '0');    
         end if;
         
+
             case EX_MEM_reg(7 downto 6) is
                 when "00" => data_mem_we_o <= (others => '0');
                 when "01" => data_mem_we_o <= "0001"; -- SB
@@ -120,7 +118,7 @@ begin
             end case;
             rd_we_mem_s <= EX_MEM_reg(5);
             rd_address_mem_s <= EX_MEM_reg(4 downto 0);
-    
+
     end process;
     
     MEM_WB: process(clk,reset, EX_MEM_reg, MEM_WB_reg)
@@ -136,12 +134,12 @@ begin
         else
             MEM_WB_reg <= (others => '0');
         end if;
-        
+
         mem_to_reg_o <= MEM_WB_reg(6);
         rd_we_o <= MEM_WB_reg(5);
         rd_we_wb_s <= MEM_WB_reg(5);
         rd_address_wb_s <= MEM_WB_reg(4 downto 0);
-        
+
 
     end process;
     

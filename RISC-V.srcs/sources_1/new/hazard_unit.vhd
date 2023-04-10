@@ -55,7 +55,7 @@ begin
             elsif((rs1_address_id_i = rd_address_mem_i or rs1_address_id_i = rd_address_mem_i) and mem_to_reg_mem_i= '1') then
                      pc_en_o <= '0';
                      if_id_en_o <= '0'; 
-                    control_pass_o <= '0';
+                     control_pass_o <= '0';
             end if;
             
         end if;
