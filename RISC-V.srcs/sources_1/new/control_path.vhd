@@ -70,9 +70,9 @@ signal pc_next_sel_s : std_logic := '0';
 
 begin
 
-    control_pass_s <= pc_next_sel_s nand control_pass_tmp;
+    control_pass_s <= '0' when control_pass_tmp = '0' or pc_next_sel_s = '1' else '1';
     
-    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s, control_pass_s)
+    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s, control_pass_s,mem_to_reg_id_s,rd_we_id_s,alu_src_b_id_s,alu_2bit_op_id_s)
     begin
     
         if(reset = '1') then

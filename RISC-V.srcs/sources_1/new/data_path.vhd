@@ -72,7 +72,6 @@ begin
                     when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
                     when '1' => program_counter <= std_logic_vector(signed(program_counter) + signed(shifted_immediate));
                     when others => program_counter <= (others => '0');
-           
                     end case;
                                      
             else
@@ -108,10 +107,8 @@ begin
 		
 		end if;
        
-       --if(if_id_flush_i = '1') then
             rs1_address <= IF_ID_reg(19 downto 15);
             rs2_address <= IF_ID_reg(24 downto 20);
-        --end if;
  
 	end process;
 	

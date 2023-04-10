@@ -43,7 +43,7 @@ begin
                       
                      pc_en_o <= '0';
                      if_id_en_o <= '0'; 
-                    control_pass_o <= '0';
+                     control_pass_o <= '0';
         
                 end if;
                 
