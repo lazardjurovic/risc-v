@@ -51,7 +51,8 @@ signal rs2_in_use_id_s : std_logic := '0';
 -- hazard unit signals
 -- inputs
 -- outputs
-signal control_pass_s : std_logic := '0';
+signal control_pass_s : std_logic := '1';
+signal control_pass_tmp : std_logic := '1';
  
 -- forwarding unit signals
 -- inputs
@@ -62,23 +63,26 @@ signal rd_we_wb_s : std_logic := '0';
 signal rd_address_mem_s : std_logic_vector(4 downto 0) := (others =>'0');
 signal rd_we_mem_s : std_logic := '0';
 
+
 -- branching unit signals
 --outputs
 signal pc_next_sel_s : std_logic := '0';
 
 begin
 
-    -- TODO: solve control_pass signal as control of ID_EX_reg
+    control_pass_s <= pc_next_sel_s nand control_pass_tmp;
     
-    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s)
+    ID_EX : process(clk, reset, instruction_i, MEM_WB_reg, ID_EX_reg, branch_id_s, control_pass_s)
     begin
     
         if(reset = '1') then
             if(rising_edge(clk)) then
-                
-                ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
+                if(control_pass_s = '1') then
+                    ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
                              instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
-                             
+                else
+                    ID_EX_reg <= (others => '0');
+                end if;             
                  
             end if;
         else
@@ -86,11 +90,10 @@ begin
         end if;
         
             alu_src_b_o <= ID_EX_reg (27);   
-            
-            pc_next_sel_s <= branch_condition_i and branch_id_s;
-            
+
     end process;
     
+    pc_next_sel_s <= branch_condition_i and branch_id_s;
     pc_next_sel_o <= pc_next_sel_s;
     if_id_flush_o <= pc_next_sel_s;
     
@@ -211,7 +214,7 @@ port map(
     if_id_en_o => if_id_en_o,
     -- control_pass_o kontrolise da li ce u execute fazu biti prosledjeni
     -- kontrolni signali iz ctrl_decoder-a ili sve nule
-    control_pass_o => control_pass_s
+    control_pass_o => control_pass_tmp
 );
 
 
