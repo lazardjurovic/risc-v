@@ -69,71 +69,61 @@ begin
     --control_pass_s <= '0' when control_pass_tmp = '0' or pc_next_sel_s = '1' else '1';
     control_pass_s <= control_pass_tmp;
     
-    ID_EX : process(clk, reset, instruction_i, ID_EX_reg, control_pass_s,mem_to_reg_id_s,rd_we_id_s,alu_src_b_id_s,alu_2bit_op_id_s)
+    ID_EX : process(clk, ID_EX_reg)
     begin
-    
-        if(reset = '1') then
             if(rising_edge(clk)) then
-                if(control_pass_s = '1') then
-                    ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
-                             instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
-                else
+                if(reset = '1') then
+                    if(control_pass_s = '1') then
+                        ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
+                                 instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
+                    else
+                        ID_EX_reg <= (others => '0');
+                    end if;             
+                 else
                     ID_EX_reg <= (others => '0');
-                end if;             
-                 
+                 end if;
             end if;
-        else
-            ID_EX_reg <= (others => '0');
-        end if;
          
             alu_src_b_o <= ID_EX_reg (27);   
-
-
     end process;
     
     pc_next_sel_o <=  branch_condition_i and branch_id_s;
     if_id_flush_o <=  branch_condition_i and branch_id_s;
     
-    EX_MEM: process(clk,reset, ID_EX_reg, EX_MEM_reg)
+    EX_MEM: process(clk, ID_EX_reg, EX_MEM_reg)
     begin
         
-        if(reset = '1') then
-            
-            if(rising_edge(clk)) then
-                
+        if(rising_edge(clk)) then
+            if(reset = '1') then
                 EX_MEM_reg <= ID_EX_reg(31) & ID_EX_reg(30 downto 29) & ID_EX_reg(28) & ID_EX_reg(14 downto 10); -- mem_to_reg & data_mem_we_id & rd_ex & rd_address
-                
-            end if; 
-        else
-            EX_MEM_reg <= (others => '0');    
-        end if;
-        
+            else
+                EX_MEM_reg <= (others => '0');   
+            end if;
+        end if; 
 
-            case EX_MEM_reg(7 downto 6) is
-                when "00" => data_mem_we_o <= (others => '0');
-                when "01" => data_mem_we_o <= "0001"; -- SB
-                when "10" => data_mem_we_o <= "0011"; -- SH
-                when "11" => data_mem_we_o <= "1111"; -- SW
-                when others => data_mem_we_o <= (others => '0');
-            end case;
-            rd_we_mem_s <= EX_MEM_reg(5);
-            rd_address_mem_s <= EX_MEM_reg(4 downto 0);
+        case EX_MEM_reg(7 downto 6) is
+            when "00" => data_mem_we_o <= (others => '0');
+            when "01" => data_mem_we_o <= "0001"; -- SB
+            when "10" => data_mem_we_o <= "0011"; -- SH
+            when "11" => data_mem_we_o <= "1111"; -- SW
+            when others => data_mem_we_o <= (others => '0');
+        end case;
+            
+        rd_we_mem_s <= EX_MEM_reg(5);
+        rd_address_mem_s <= EX_MEM_reg(4 downto 0);
 
     end process;
+        
     
     MEM_WB: process(clk,reset, EX_MEM_reg, MEM_WB_reg)
-    begin
-    
-        if(reset = '1') then
-        
-            if(rising_edge(clk)) then
-                
+    begin       
+        if(rising_edge(clk)) then
+            if(reset = '1') then
                 MEM_WB_reg <= EX_MEM_reg(8) & EX_MEM_reg(5) & EX_MEM_reg(4 downto 0);
-                
+            else
+                   MEM_WB_reg <= (others => '0');
             end if; 
-        else
-            MEM_WB_reg <= (others => '0');
-        end if;
+        end if; 
 
         mem_to_reg_o <= MEM_WB_reg(6);
         rd_we_o <= MEM_WB_reg(5);
