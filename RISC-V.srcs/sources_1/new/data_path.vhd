@@ -63,7 +63,7 @@ architecture behav of data_path is
     
 begin
 
-	Prog_cntr : process (reset, clk, pc_en_i, pc_next_sel_i,shifted_immediate, program_counter)
+	Prog_cntr : process (clk)
 	begin
 		if (rising_edge(clk)) then
                   
@@ -84,7 +84,7 @@ begin
     instr_mem_address_o <= program_counter when pc_en_i = '1' and rising_edge(clk);
     shifted_immediate <= immediate(30 downto 0 ) & '0';
 	
-	IF_ID : process (reset, clk, instr_mem_read_i, if_id_flush_i, if_id_en_i, branch_forward_a_i, branch_forward_b_i, wb_forward_data,rs1_data,rs2_data, branch_comp_a, branch_comp_b, IF_ID_reg,immediate)
+	IF_ID : process (clk, IF_ID_reg)
 	begin
 		
 		if(rising_edge(clk)) then
@@ -99,13 +99,14 @@ begin
 		
 		end if;
         
-                rs1_address <= IF_ID_reg(19 downto 15);
-                rs2_address <= IF_ID_reg(24 downto 20);
+            rs1_address <= IF_ID_reg(19 downto 15);
+            rs2_address <= IF_ID_reg(24 downto 20);
+                
 	end process;
 	
     instruction_o <= IF_ID_reg(31 downto 0);
 
-	ID_EX : process (reset, clk, rs1_data, rs2_data, immediate, IF_ID_reg,alu_forward_a_i,alu_forward_b_i,wb_forward_data,mem_forward_data, ID_EX_reg, alu_src_b_i, alu_b_intern)
+	ID_EX : process (clk)
 	begin
 
 			if (rising_edge(clk)) then
@@ -117,31 +118,26 @@ begin
  
 			end if;
     
+end process;
 
-		case alu_forward_a_i is
- 
-			when "00" => alu_a <= ID_EX_reg(127 downto 96); -- rs1 data
-			when "01" => alu_a <= wb_forward_data;
-			when "10" => alu_a <= mem_forward_data;
-			when others => alu_a    <= (others => '0');
- 
-		end case;
- 
-		case alu_forward_b_i is
- 
-			when "00" => alu_b_intern <= ID_EX_reg(95 downto 64); -- rs2 data
-			when "01" => alu_b_intern <= wb_forward_data;
-			when "10" => alu_b_intern <= mem_forward_data;
-			when others => alu_b_intern    <= (others => '0');
- 
-		end case;
-		
+with alu_forward_a_i select
+    alu_a <= ID_EX_reg(127 downto 96) when "00",
+    wb_forward_data when "01",
+    mem_forward_data when "10",
+    (others => '0') when others;
 
-		alu_b <= alu_b_intern when alu_src_b_i = '0' else ID_EX_reg(63 downto 32); -- immediate
+with alu_forward_b_i select
+    alu_b_intern <= ID_EX_reg(95 downto 64) when "00",
+    wb_forward_data when "01",
+    mem_forward_data when "10",
+    (others => '0') when others;
 
-	end process;
 
-	EX_MEM : process (reset, clk, alu_out, ID_EX_reg, EX_MEM_reg)
+
+    alu_b <= alu_b_intern when alu_src_b_i = '0' else ID_EX_reg(63 downto 32); -- immediate
+
+
+	EX_MEM : process (clk,EX_MEM_reg)
 	begin
 			if (rising_edge(clk)) then
                 if(reset = '1') then
@@ -158,7 +154,7 @@ begin
 
 	end process;
 
-	MEM_WB : process (reset, clk, EX_MEM_reg)
+	MEM_WB : process (clk)
 	begin
 			if (rising_edge(clk)) then
                 if(reset = '1') then
