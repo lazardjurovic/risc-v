@@ -3,7 +3,7 @@
 
 ![](https://riscv.org/wp-content/uploads/2018/09/riscv-logo-1.png)
 
-Project for Microcomputer arhitecture course at Faculty of Techical Sciences in Novi Sad. Main idea is to implement full 5 stage pipelined RV32 I.
+Project for Microcomputer arhitecture course at Faculty of Techical Sciences in Novi Sad. Main idea is to implement full 5 stage pipelined RV32I.
 
 <figure>
 <img src="https://i.ibb.co/tpFXhKB/schematic-top.png" alt="schematic-top" border="0">
