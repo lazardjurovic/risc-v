@@ -61,27 +61,46 @@ architecture behav of data_path is
     signal shifted_immediate : std_logic_vector(31 downto 0);
     signal mem_wb_rd_data_s : std_logic_vector(31 downto 0);
     
+    signal pc_next_s : std_logic_vector(31 downto 0);
+    signal pc_last : std_logic_vector(31 downto 0);
 begin
-
-	Prog_cntr : process (clk)
+	
+	prog_cntr : process(clk)
 	begin
-		if (rising_edge(clk)) then
-                  
-            if(reset = '1') then
-                case pc_next_sel_i is
-                    when '0' => program_counter <= std_logic_vector(unsigned(program_counter) + 4);
-                    when '1' => program_counter <= std_logic_vector(signed(program_counter) + signed(shifted_immediate) +4);
-                    when others => program_counter <= (others => '0');
-                    end case;                                                         
-            else
-                program_counter <= (others => '0');	
-            end if;
-		end if; 
+	
+	   if(rising_edge(clk)) then	       
+	       if(reset = '0') then
+	           program_counter <= (others => '0');	
+	       elsif(pc_en_i = '1' and reset = '1') then
+	           program_counter <= pc_next_s;
+	       end if; 
+	   end if;
 
 	end process;
 	
+	PC_sync: process(clk)
+    begin
+    
+        if(rising_edge(clk)) then
+            if(pc_en_i = '1') then
+                case pc_next_sel_i is
+                    when '0' =>  pc_next_s <= std_logic_vector(unsigned(program_counter) +4);
+                    when '1' =>  pc_next_s <= std_logic_vector(signed(pc_last) + signed(immediate));
+                    when others => pc_next_s <= (others => '0');
+                end case;
+            end if;
+        end if; 
+    
+    end process;
 	
-    instr_mem_address_o <= program_counter when pc_en_i = '1' and rising_edge(clk);
+--        with pc_next_sel_i select
+--            pc_next_s <= std_logic_vector(unsigned(program_counter) +4) when '0' ,
+--            std_logic_vector(signed(pc_last) + signed(immediate)) when '1' ,
+--            (others => '0') when others;
+
+    pc_last <= program_counter when rising_edge(clk);    
+        
+    instr_mem_address_o <= program_counter;
     shifted_immediate <= immediate(30 downto 0 ) & '0';
 	
 	IF_ID : process (clk, IF_ID_reg)
