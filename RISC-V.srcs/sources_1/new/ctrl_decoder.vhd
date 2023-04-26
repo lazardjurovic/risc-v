@@ -15,7 +15,8 @@ entity ctrl_decoder is
 		rd_we_o       : out std_logic;
 		rs1_in_use_o  : out std_logic;
 		rs2_in_use_o  : out std_logic;
-		alu_2bit_op_o : out std_logic_vector(1 downto 0)
+		alu_2bit_op_o : out std_logic_vector(1 downto 0);
+		pc_operand    : out std_logic
 	);
 end entity;
 
@@ -36,6 +37,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='1';
             alu_2bit_op_o <= "10";
+            pc_operand <= '0';
         when "0010011" => -- I type
             branch_o <= '0';
             mem_to_reg_o <='0';
@@ -45,6 +47,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='0'; -- only rs1 is used by instruction
             alu_2bit_op_o <= "11";
+            pc_operand <= '0';
         when "0000011" => -- Load
             branch_o <= '0';
             mem_to_reg_o <='1';
@@ -54,6 +57,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='0'; 
             alu_2bit_op_o <= "00";
+            pc_operand <= '0';
         when "1100011" => -- B type
             branch_o <= '1';
             mem_to_reg_o <='0';
@@ -63,6 +67,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='1';
             alu_2bit_op_o <= "01";
+            pc_operand <= '0';
         when "0100011" => -- S type
             branch_o <= '0';
             mem_to_reg_o <='0';
@@ -79,6 +84,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='1';
             alu_2bit_op_o <= "00";
+            pc_operand <= '0';
         when "1100111" => -- JALR
             branch_o <= '1';
             mem_to_reg_o <='0';
@@ -88,6 +94,7 @@ begin
             rs1_in_use_o <='1';
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
+            pc_operand <= '1';
         when "1101111" => -- JAL
             branch_o <= '1';
             mem_to_reg_o <='0';
@@ -97,6 +104,7 @@ begin
             rs1_in_use_o <='0';
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
+            pc_operand <= '1';
         when "0010111" => -- AUIPC
             branch_o <= '0';
             mem_to_reg_o <='0';
@@ -106,6 +114,7 @@ begin
             rs1_in_use_o <='0';
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
+            pc_operand <= '1';
         when "0110111" => -- LUI
             branch_o <= '0';
             mem_to_reg_o <='0';
@@ -115,6 +124,7 @@ begin
             rs1_in_use_o <='0';
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
+            pc_operand <= '0';
         when others =>
             branch_o <= '0';
             mem_to_reg_o <='0';
@@ -124,6 +134,7 @@ begin
             rs1_in_use_o <='0';
             rs2_in_use_o <='0';
             alu_2bit_op_o <= "00";
+            pc_operand <= '0';
         end case;
         
     end process;

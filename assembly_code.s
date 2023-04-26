@@ -5,9 +5,8 @@ xor x3  x3 x3
 loop:
 add x3 x3 x2
 addi x1 x1 -1
-beq x1 x0 end
-beq x0 x0 loop
+bgt x1 x0 loop
 
-end:
 sw x3 0(x0)
 lui x4 0x00001
+auipc x5 0x00001

@@ -17,6 +17,7 @@ entity control_path is
 		rd_we_o       : out std_logic;
 		pc_next_sel_o : out std_logic;
 		data_mem_we_o : out std_logic_vector(3 downto 0);
+		pc_operand    : out std_logic;
 		-- kontrolni signali za prosledjivanje operanada u ranije faze protocne obrade
 		alu_forward_a_o    : out std_logic_vector (1 downto 0);
 		alu_forward_b_o    : out std_logic_vector (1 downto 0);
@@ -32,21 +33,20 @@ end entity;
 
 architecture behav of control_path is
 
-signal ID_EX_reg : std_logic_vector(31 downto 0); 
+signal ID_EX_reg : std_logic_vector(32 downto 0); 
 signal EX_MEM_reg : std_logic_vector(8 downto 0);
 signal MEM_WB_reg : std_logic_vector(6 downto 0);
 
 -- control decoder signals
--- innputs
 signal mem_to_reg_id_s : std_logic := '0';
 signal data_mem_we_id_s : std_logic_vector(1 downto 0) := "00";
 signal rd_we_id_s : std_logic := '0';
 signal alu_src_b_id_s : std_logic := '0';
 signal branch_id_s : std_logic := '0' ;
-signal alu_2bit_op_id_s : std_logic_vector(1 downto 0) := (others =>'0');
--- outputs 
+signal alu_2bit_op_id_s : std_logic_vector(1 downto 0) := (others =>'0'); 
 signal rs1_in_use_id_s : std_logic := '0';
 signal rs2_in_use_id_s : std_logic := '0';
+signal pc_operand_s : std_logic := '0';
 
 -- hazard unit signals
 -- inputs
@@ -74,7 +74,7 @@ begin
             if(rising_edge(clk)) then
                 if(reset = '1') then
                     if(control_pass_s = '1') then
-                        ID_EX_reg <= mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
+                        ID_EX_reg <= pc_operand_s & mem_to_reg_id_s & data_mem_we_id_s & rd_we_id_s & alu_src_b_id_s & alu_2bit_op_id_s &
                                  instruction_i(14 downto 12) & instruction_i(31 downto 25) & instruction_i(11 downto 7) & instruction_i(19 downto 15) & instruction_i(24 downto 20);
                     else
                         ID_EX_reg <= (others => '0');
@@ -85,6 +85,7 @@ begin
             end if;
          
             alu_src_b_o <= ID_EX_reg (27);   
+            pc_operand <= ID_EX_reg(32);
     end process;
     
     pc_next_sel_o <=  branch_condition_i and branch_id_s;
@@ -146,7 +147,8 @@ port map(
     rd_we_o      => rd_we_id_s,
     rs1_in_use_o  => rs1_in_use_id_s,
     rs2_in_use_o   => rs2_in_use_id_s,
-    alu_2bit_op_o  => alu_2bit_op_id_s
+    alu_2bit_op_o  => alu_2bit_op_id_s,
+    pc_operand => pc_operand_s
 );
 
 forward: entity work.forwarding_unit

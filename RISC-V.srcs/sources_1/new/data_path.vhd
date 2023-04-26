@@ -21,6 +21,7 @@ entity data_path is
 		alu_src_b_i        : in std_logic;
 		pc_next_sel_i      : in std_logic;
 		rd_we_i            : in std_logic;
+		pc_operand         : in std_logic;
 		-- kontrolni signali za prosledjivanje operanada u ranije faze protocneobrade
 		alu_forward_a_i    : in std_logic_vector (1 downto 0);
 		alu_forward_b_i    : in std_logic_vector (1 downto 0);
@@ -55,14 +56,15 @@ architecture behav of data_path is
 	signal immediate                           : std_logic_vector(31 downto 0);
 
 	signal branch_comp_a, branch_comp_b        : std_logic_vector(31 downto 0); -- input signals for comparator calculating branch_condition
-	signal alu_a, alu_b, alu_b_intern, alu_out : std_logic_vector(31 downto 0); -- signals for connecting ALU sorces
+	signal alu_a_intern, alu_a, alu_b, alu_b_intern, alu_out : std_logic_vector(31 downto 0); -- signals for connecting ALU sorces
 
 	signal wb_forward_data, mem_forward_data   : std_logic_vector(31 downto 0);
     signal shifted_immediate : std_logic_vector(31 downto 0);
     signal mem_wb_rd_data_s : std_logic_vector(31 downto 0);
     
     signal pc_next_s : std_logic_vector(31 downto 0);
-    signal pc_last : std_logic_vector(31 downto 0);
+    signal pc_if_id : std_logic_vector(31 downto 0);
+    signal pc_id_ex : std_logic_vector(31 downto 0);
 begin
 	
 	prog_cntr : process(clk)
@@ -85,7 +87,7 @@ begin
             if(pc_en_i = '1') then
                 case pc_next_sel_i is
                     when '0' =>  pc_next_s <= std_logic_vector(unsigned(program_counter) +4);
-                    when '1' =>  pc_next_s <= std_logic_vector(signed(pc_last) + signed(immediate));
+                    when '1' =>  pc_next_s <= std_logic_vector(signed(pc_if_id) + signed(immediate));
                     when others => pc_next_s <= (others => '0');
                 end case;
             end if;
@@ -95,10 +97,10 @@ begin
 	
 --        with pc_next_sel_i select
 --            pc_next_s <= std_logic_vector(unsigned(program_counter) +4) when '0' ,
---            std_logic_vector(signed(pc_last) + signed(immediate)) when '1' ,
+--            std_logic_vector(signed(pc_if_id) + signed(immediate)) when '1' ,
 --            (others => '0') when others;
 
-    pc_last <= program_counter when rising_edge(clk);    
+    pc_if_id <= program_counter when rising_edge(clk);    
         
     instr_mem_address_o <= program_counter;
     shifted_immediate <= immediate(30 downto 0 ) & '0';
@@ -131,8 +133,10 @@ begin
 			if (rising_edge(clk)) then
 			    if(reset = '1') then
 				    ID_EX_reg <= rs1_data & rs2_data & immediate & IF_ID_reg(31 downto 0);
+				    pc_id_ex <= pc_if_id;
 				else
 				    ID_EX_reg <= (others => '0');
+				    pc_id_ex <= (others => '0');
 				end if;
  
 			end if;
@@ -140,7 +144,7 @@ begin
 end process;
 
 with alu_forward_a_i select
-    alu_a <= ID_EX_reg(127 downto 96) when "00",
+    alu_a_intern <= ID_EX_reg(127 downto 96) when "00",
     wb_forward_data when "01",
     mem_forward_data when "10",
     (others => '0') when others;
@@ -151,9 +155,8 @@ with alu_forward_b_i select
     mem_forward_data when "10",
     (others => '0') when others;
 
-
-
     alu_b <= alu_b_intern when alu_src_b_i = '0' else ID_EX_reg(63 downto 32); -- immediate
+    alu_a <= alu_a_intern when pc_operand = '0' else pc_id_ex;
 
 
 	EX_MEM : process (clk,EX_MEM_reg)

@@ -33,6 +33,7 @@ signal if_id_flush_s : std_logic;
 signal pc_en_s : std_logic;     
 signal if_id_en_s : std_logic;
 signal branch_condition_s : std_logic;
+signal pc_operand_s : std_logic;
                
 begin
 
@@ -66,7 +67,8 @@ port map(
 		-- kontrolni signali za zaustavljanje protocne obrade
 		pc_en_i    => pc_en_s,
 		if_id_en_i => if_id_en_s,
-		branch_condition_o => branch_condition_s
+		branch_condition_o => branch_condition_s,
+		pc_operand => pc_operand_s
 );
 
 control: entity work.control_path
@@ -93,7 +95,8 @@ port map(
 		-- kontrolni signali za zaustavljanje protocne obrade
 		pc_en_o    => pc_en_s,
 		if_id_en_o => if_id_en_s,
-		branch_condition_i => branch_condition_s
+		branch_condition_i => branch_condition_s,
+		pc_operand => pc_operand_s
 );
 
 end structural;
